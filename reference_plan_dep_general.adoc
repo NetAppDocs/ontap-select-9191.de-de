@@ -1,0 +1,138 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_dep_general.html 
+keywords: plan, planning, ontap select deploy, general requirements 
+summary: Es gibt einige allgemeine Anforderungen, die Sie bei der Planung der Installation des ONTAP Select Deploy-Verwaltungsprogramms berücksichtigen sollten. 
+---
+= ONTAP Select Deploy – Allgemeine Anforderungen und Planung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Es gibt einige allgemeine Anforderungen, die Sie bei der Planung der Installation des ONTAP Select Deploy-Verwaltungsprogramms berücksichtigen sollten.
+
+
+
+[[pairing-the-deploy-utility-with-the-ontap-select-clusters]]
+== Kopplung des Deploy-Dienstprogramms mit den ONTAP Select Clustern
+
+Beim Koppeln einer Instanz des Deploy-Dienstprogramms mit den ONTAP Select Clustern stehen Ihnen mehrere Optionen zur Verfügung.
+
+
+NOTE: In allen Bereitstellungsszenarien kann ein einzelner ONTAP Select Cluster und die Knoten im Cluster nur von einer Instanz des Deploy-Verwaltungsprogramms verwaltet werden. Ein Cluster kann nicht von zwei oder mehr verschiedenen Instanzen des Deploy-Verwaltungsprogramms verwaltet werden.
+
+.Eine Instanz des Dienstprogramms für jedes ONTAP Select Cluster
+Sie können jeden ONTAP Select Cluster mithilfe einer dedizierten Instanz des Deploy-Dienstprogramms bereitstellen und verwalten. Mit dieser Eins-zu-eins-Konfiguration besteht eine klare Trennung zwischen den einzelnen Dienstprogramm-zu-Cluster-Paaren. Diese Konfiguration bietet ein hohes Maß an Isolation mit kleineren Ausfallbereichen.
+
+.Eine Instanz des Dienstprogramms für mehrere ONTAP Select Cluster
+Sie können mehrere ONTAP Select Cluster in Ihrem Unternehmen mit einer einzigen Instanz des Deploy-Dienstprogramms bereitstellen und verwalten. Mit dieser Eins-zu-Viele-Konfiguration werden alle Verarbeitungs- und Konfigurationsdaten von derselben Instanz des Deploy-Dienstprogramms verwaltet.
+
+
+NOTE: Eine Instanz des Deploy-Dienstprogramms kann bis zu 400 ONTAP Select Nodes oder 100 Cluster verwalten.
+
+
+
+[[requirements-related-to-the-kvm-environment]]
+== Anforderungen im Zusammenhang mit der KVM-Umgebung
+
+Bevor Sie das Deploy-Verwaltungsprogramm in einer KVM-Hypervisor-Umgebung installieren, sollten Sie die grundlegenden Anforderungen überprüfen und die Bereitstellung vorbereiten.
+
+.Anforderungen und Einschränkungen für eine Bereitstellung
+Bei der Installation des ONTAP Select Deploy Utility in einer KVM-Umgebung sind mehrere Anforderungen und Einschränkungen zu beachten.
+
+.Hardwareanforderungen für Linux KVM-Hostserver
+Es gibt mehrere Mindestanforderungen an die Systemressourcen, die Ihr Linux KVM-Hypervisor-Host erfüllen muss. Stellen Sie sicher, dass die Hosts, auf denen ONTAP Select bereitgestellt wird, die folgenden grundlegenden Anforderungen erfüllen:
+
+* Linux-Server:
++
+** Die Hardware und Software müssen 64-Bit sein
+** Der Server muss dieselben unterstützten Versionen verwenden wie ein ONTAP Select node
+
+
+* Virtuelle CPUs (2)
+* Virtueller Speicher (4GB)
+* Speicher (40GB)
+* "Das Dynamic Host Configuration Protocol (DHCP) ist aktiviert (Sie können auch eine statische IP-Adresse zuweisen)
+
+
+.Netzwerkverbindungen
+Überprüfen Sie, ob die Netzwerkschnittstelle der virtuellen Maschine Deploy konfiguriert ist und eine Verbindung zu den ONTAP Select-Hosts herstellen kann, die sie verwaltet.
+
+.Unterstützung für IP-Version 4
+ONTAP Select Deploy unterstützt ausschließlich IP Version 4 (IPv4). IP Version 6 (IPv6) wird nicht unterstützt. Diese Einschränkung betrifft ONTAP Select wie folgt:
+
+* Sie müssen der Management-LIF der Deploy-VM eine IPv4-Adresse zuweisen.
+* Deploy kann keine ONTAP Select Knoten erstellen, die für die Verwendung von IPv6 auf den ONTAP LIFs konfiguriert sind.
+
+
+
+
+[[required-configuration-information]]
+== Erforderliche Konfigurationsinformationen
+
+Im Rahmen Ihrer Bereitstellungsplanung sollten Sie die erforderlichen Konfigurationsinformationen ermitteln, bevor Sie das ONTAP Select Deploy Verwaltungsprogramm installieren.
+
+.Name der Deploy-VM
+Der Name, der für die VM verwendet werden soll.
+
+.Name des Linux-KVM-Hosts
+Der Linux KVM-Host, auf dem das Deploy-Dienstprogramm installiert ist.
+
+.Name des Speicherpools
+Der Speicherpool, der die VM-Dateien enthält (ca. 40GB werden benötigt).
+
+.Netzwerk für die VM
+Das Netzwerk, mit dem die Deploy-VM verbunden ist.
+
+
+
+[[optional-network-configuration-information]]
+== Optionale Netzwerkkonfigurationsinformationen
+
+Die Deploy-VM wird standardmäßig über DHCP konfiguriert. Bei Bedarf können Sie die Netzwerkschnittstelle der VM jedoch manuell konfigurieren.
+
+.Hostname
+Der Name des Hosts.
+
+.Host-IP-Adresse
+Die statische IPv4-Adresse.
+
+.Subnetzmaske
+Die Subnetzmaske, die auf dem Netzwerk basiert, zu dem die VM gehört.
+
+.Gateway
+Das Standardgateway oder der Standardrouter.
+
+.Primärer DNS-Server
+Der primäre Domain Name Server.
+
+.Sekundärer DNS-Server
+Der sekundäre Domain Name Server.
+
+.Suchdomänen
+Die zu verwendenden Suchdomänen.
+
+
+
+[[authentication-using-the-credential-store]]
+== Authentifizierung mithilfe des Anmeldeinformationsspeichers
+
+Der ONTAP Select Deploy-Anmeldeinformationsspeicher ist eine Datenbank mit Kontoinformationen. Deploy verwendet die Anmeldeinformationen, um im Rahmen der Clustererstellung und des Cluster-Managements die Host-Authentifizierung durchzuführen. Für die Planung eines ONTAP Select Deployment ist es wichtig zu wissen, wie der Anmeldeinformationsspeicher verwendet wird.
+
+
+NOTE: Die Kontoinformationen werden sicher in der Datenbank mithilfe des AES-Verschlüsselungsalgorithmus und des SHA-256-Hashing-Algorithmus gespeichert.
+
+.Arten von Anmeldeinformationen
+Folgende Arten von Anmeldeinformationen werden unterstützt:
+
+* *Host*: Wird zur Authentifizierung eines Hypervisor-Hosts im Rahmen der direkten Bereitstellung eines ONTAP Select Knotens auf VMware ESXi verwendet.
+* *vCenter*: Wird zur Authentifizierung eines vCenter Servers im Rahmen der Bereitstellung eines ONTAP Select Knotens auf ESXi verwendet, wenn der Host von VMware vCenter verwaltet wird.
+
+
+.Zugang
+Der Zugriff auf den Anmeldeinformationsspeicher erfolgt intern im Rahmen normaler administrativer Aufgaben mit Deploy, beispielsweise beim Hinzufügen eines Hypervisor-Hosts. Sie können den Anmeldeinformationsspeicher auch direkt über die Deploy Web-Benutzeroberfläche und die Deploy CLI verwalten.

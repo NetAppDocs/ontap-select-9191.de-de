@@ -1,0 +1,69 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_production.html 
+keywords: license, licensing, production, purchased, standard, premium, premium xl 
+summary: Nachdem Sie festgestellt haben, dass ONTAP Select für Ihr Unternehmen geeignet ist, können Sie die Lizenzen erwerben, die für die Unterstützung einer Implementierung in der Produktion erforderlich sind. Sie müssen entweder das Lizenzmodell Capacity Tiers oder Capacity Pools sowie die Speicherkapazität für jede Implementierung auswählen. 
+---
+= Erfahren Sie mehr über ONTAP Select-Lizenzen, die für die Implementierung in der Produktion erworben wurden
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Nachdem Sie festgestellt haben, dass ONTAP Select für Ihr Unternehmen geeignet ist, können Sie die Lizenzen erwerben, die für die Unterstützung einer Implementierung in der Produktion erforderlich sind. Sie müssen entweder das Lizenzmodell Capacity Pools oder Capacity Tiers sowie die Speicherkapazität für jede Implementierung auswählen.
+
+
+
+[[common-licensing-characteristics]]
+== Gemeinsame Lizenzierungsmerkmale
+
+Die Lizenzmodelle _Capacity Pools_ und _Capacity Tiers_ sind in vielerlei Hinsicht sehr unterschiedlich. Allerdings weisen die beiden Lizenzmodelle mehrere gemeinsame Merkmale auf, darunter:
+
+* Sie müssen beim Einsatz von ONTAP Select in einer Produktionsumgebung je nach Bedarf eine oder mehrere Lizenzen erwerben.
+* Die Speicherkapazität einer Lizenz wird in 1-TB-Schritten zugeteilt.
+* Alle Plattformlizenzangebote werden unterstützt (standard, premium und premium XL).
+* Sie sollten sich bei Bedarf an Ihr NetApp Account-Team oder Ihren Partner wenden, um Unterstützung beim Erwerb der erforderlichen Lizenzen zu erhalten.
+* Sie müssen die Lizenzdateien in das Deploy-Verwaltungsprogramm hochladen, das die Lizenzen dann gemäß dem Lizenzmodell anwendet.
+* Nach der Installation und Anwendung einer Lizenz können Sie zusätzliche Kapazität hinzufügen, indem Sie sich an Ihr NetApp Account-Team oder Ihren Partner wenden, um eine aktualisierte Lizenz zu erhalten.
+* Ein ONTAP Select Knoten, der initial mit einer erworbenen Lizenz bereitgestellt wurde, kann nicht in eine Evaluierungslizenz umgewandelt werden.
+
+
+
+
+[[capacity-tiers-licensing-model]]
+== Lizenzmodell für Kapazitäts-Tiers
+
+Es gibt mehrere Merkmale, die einzigartig für das Lizenzmodell Capacity Tiers sind, darunter:
+
+* Sie müssen für jeden ONTAP Select Node eine Lizenz erwerben.
+* Die Mindestmenge, die Sie erwerben können, beträgt 1 TB.
+* Jede Capacity-Tier-Lizenz verfügt über eine Speicherkapazität und ist an einen bestimmten Knoten gebunden.
+* Die Speicherkapazität kennzeichnet die Bruttokapazität und entspricht der maximal zulässigen Größe der für die ONTAP Select virtuelle Maschine verfügbaren Datenträger.
+* NetApp generiert eine neunstellige Lizenzseriennummer für jeden ONTAP Select Knoten.
+* Der einem Knoten zugewiesene Speicherplatz ist unbegrenzt (keine Verlängerung erforderlich), aber Sie müssen den mit der Lizenz verbundenen Supportvertrag verlängern.
+* Jeder ONTAP Select Node in einem Hochverfügbarkeitspaar (HA) benötigt eine Lizenz, die mindestens so groß ist wie die an den Node angeschlossene Bruttokapazität.
+* Die Knotenseriennummer ist neunstellig und entspricht der Lizenzseriennummer.
+* Sie können die Lizenzdatei während der Clusterbereitstellung oder innerhalb von 30 Tagen nach der Erstellung eines Clusters anwenden.
+
+
+
+
+[[capacity-pools-licensing-model]]
+== Capacity Pools Lizenzmodell
+
+Es gibt mehrere Merkmale, die einzigartig für das Lizenzmodell Capacity Pools sind, darunter:
+
+* Sie müssen für jeden gemeinsam genutzten Kapazitätspool eine Lizenz erwerben.
+* Die Mindestmenge, die Sie erwerben können, beträgt 2 TB.
+* Jede Capacity Pool-Lizenz verfügt über eine Speicherkapazität und ist an eine bestimmte License Manager-Instanz innerhalb eines Deploy-Verwaltungsprogramms gebunden.
+* Die Speicherkapazität kennzeichnet die Bruttokapazität und entspricht der maximal zulässigen Größe der Datenaggregate, die Sie in der ONTAP Select virtuellen Maschine erstellen können.
+* Eine neunstellige Lizenzseriennummer wird von NetApp für jeden Kapazitätspool generiert.
+* Der einem Kapazitätspool zugewiesene Speicherplatz ist nur für einen bestimmten Zeitraum entsprechend dem Kauf gültig (Verlängerung erforderlich).
+* Der License Manager generiert eine zwanzigstellige Knotenseriennummer basierend auf der Capacity Pool-Lizenzseriennummer.
+* Alle ONTAP Select Knoten in einem Cluster teilen sich die gleiche Lizenzkapazität. Das bedeutet, dass die Lizenz groß genug sein muss, um den allen Knoten im Cluster zugewiesenen Speicher abzudecken.
+* Jeder Knoten mietet automatisch Speicherkapazität für seine lokalen Datenaggregate aus einem gemeinsamen Capacity Pool.
+

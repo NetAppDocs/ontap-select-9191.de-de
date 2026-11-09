@@ -1,0 +1,35 @@
+---
+sidebar: sidebar 
+permalink: task_cli_signing_in.html 
+keywords: administer, administering, cli, deploy, sign in, signing in 
+summary: Sie müssen sich per SSH an der Deploy-Management-Shell anmelden. Nach der Anmeldung können Sie CLI-Befehle ausführen, um einen ONTAP Select Cluster zu erstellen und zugehörige administrative Verfahren durchzuführen. 
+---
+= Anmeldung bei ONTAP Select Deploy über SSH
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sie müssen sich per SSH an der Deploy-Management-Shell anmelden. Nach der Anmeldung können Sie CLI-Befehle ausführen, um einen ONTAP Select Cluster zu erstellen und zugehörige administrative Verfahren durchzuführen.
+
+.Bevor Sie beginnen
+Sie benötigen das aktuelle Passwort für das Deploy-Administratorkonto (admin). Wenn Sie sich zum ersten Mal anmelden und vCenter zur Installation der Deploy-virtuellen Maschine verwendet haben, sollten Sie das während der Installation festgelegte Passwort verwenden.
+
+.Schritte
+. Die Anmeldung erfolgt mit dem Administratorkonto und der Verwaltungs-IP-Adresse der virtuellen Maschine Deploy, zum Beispiel:
++
+`ssh admin@<10.235.82.22>`
+
+. Wenn Sie sich zum ersten Mal anmelden und Deploy nicht mithilfe des mit vCenter verfügbaren Assistenten installiert haben, geben Sie die folgenden Konfigurationsinformationen an, wenn Sie dazu aufgefordert werden:
++
+** Neues Passwort für das Administratorkonto (erforderlich)
+** Firmenname (erforderlich)
+** Proxy-URL (optional)
+
+
+. Geben Sie *?* ein und drücken Sie die *Eingabetaste*, um eine Liste der verfügbaren Management-Shell-Befehle anzuzeigen.
+

@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: task_lic_acquire_ct.html 
+keywords: license, licensing, acquire, Capacity Tiers 
+summary: Bei Verwendung von Capacity Tiers-Lizenzen benötigen Sie für jeden ONTAP Select Knoten eine Lizenzdatei. Die Lizenzdatei definiert die Speicherkapazität des Knotens und ist über die eindeutige neunstellige Seriennummer, die von NetApp zugewiesen wird, an den Knoten gebunden. 
+---
+= Erwerben Sie eine ONTAP Select Capacity Tier-Lizenz
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Bei Verwendung von Capacity Tiers-Lizenzen benötigen Sie für jeden ONTAP Select Knoten eine Lizenzdatei. Die Lizenzdatei definiert die Speicherkapazität des Knotens und ist über die eindeutige neunstellige Seriennummer, die von NetApp zugewiesen wird, an den Knoten gebunden.
+
+.Bevor Sie beginnen
+* Sie benötigen die neunstellige Lizenzseriennummer, die dem ONTAP Select Knoten von NetApp zugewiesen wurde.
+* Sie sollten mindestens 24 Stunden nach dem Versanddatum Ihrer Bestellung warten, bevor Sie eine Lizenzdatei erwerben.
+* Sie haben die link:sizing-capacity-tier-license.html["Überlegungen zur Dimensionierung einer Capacity Tiers license"] überprüft.
+
+
+.Über diese Aufgabe
+Sie müssen diese Aufgabe für jeden ONTAP Select Node ausführen, der eine Capacity Tiers-Lizenz benötigt.
+
+.Schritte
+. link:https://register.netapp.com/register/getlicensefile["Greifen Sie auf die ONTAP Select Lizenzseite zu"^].
+. Die Anmeldung erfolgt mit Ihren NetApp Zugangsdaten.
+. Auf der Seite *Lizenzgenerator* wählen Sie das gewünschte Lizenzangebot aus dem Dropdown-Menü aus.
+. Füllen Sie die restlichen Felder auf der Seite *License Generator* aus, einschließlich der *Product Serial #*.
++
+Die „Produktseriennummer“ ist die Seriennummer für den ONTAP Select Node.
+
+. Wählen Sie *Absenden*.
+. Nachdem die Anfrage bestätigt wurde, wählen Sie die Zustellungsmethode für die Lizenz aus.
++
+Sie können entweder *Lizenz herunterladen* oder *Lizenz per E-Mail* auswählen.
+
+. Bestätigen Sie, dass Sie die Lizenzdatei gemäß der von Ihnen gewählten Zustellungsmethode erhalten haben.
+
+
+.Nachdem Sie fertig sind
+Sie müssen die Lizenzdatei in das Deploy-Verwaltungsprogramm hochladen, bevor sie auf einen ONTAP Select-Knoten angewendet werden kann.

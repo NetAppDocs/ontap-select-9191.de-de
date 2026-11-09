@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: task_adm_connectivity.html 
+keywords: administer, administering, web, connectivity, network connectivity, network checker 
+summary: Sie können die Netzwerkverbindung zwischen zwei oder mehr ONTAP Select Knoten im internen Clusternetzwerk testen. Sie führen diesen Test typischerweise durch, bevor ein Multi-Node-Cluster bereitgestellt wird, um Probleme zu erkennen, die dazu führen könnten, dass der Vorgang fehlschlägt. 
+---
+= Konnektivität zwischen den ONTAP Select Knoten prüfen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sie können die Netzwerkverbindung zwischen zwei oder mehr ONTAP Select Knoten im internen Clusternetzwerk testen. Sie führen diesen Test typischerweise durch, bevor ein Multi-Node-Cluster bereitgestellt wird, um Probleme zu erkennen, die dazu führen könnten, dass der Vorgang fehlschlägt.
+
+.Bevor Sie beginnen
+Alle im Test enthaltenen ONTAP Select-Knoten müssen konfiguriert und eingeschaltet sein.
+
+.Über diese Aufgabe
+Bei jedem Teststart wird im Hintergrund ein neuer Prozesslauf erstellt und mit einer eindeutigen Lauf-ID versehen. Es kann jeweils nur ein Lauf aktiv sein.
+
+Der Test verfügt über zwei Modi, die seinen Ablauf steuern:
+
+* Schnell. Dieser Modus führt einen grundlegenden, nicht-unterbrechenden Test durch. Es wird ein PING-Test durchgeführt, zusammen mit einem Test der Netzwerk-MTU-Größe und der vSwitch.
+* Der erweiterte Modus führt einen umfassenderen Test aller redundanten Netzwerkpfade durch. Wenn Sie dies auf einem aktiven ONTAP Select Cluster ausführen, kann die Performance des Clusters beeinträchtigt werden.
+
+
+
+NOTE: Es wird empfohlen, vor der Erstellung eines Multi-Node-Clusters stets einen Schnelltest durchzuführen. Nach erfolgreichem Abschluss des Schnelltests können Sie optional einen erweiterten Test basierend auf Ihren Produktionsanforderungen durchführen.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Administration* und anschließend *Network Checker*.
+. Wählen Sie *Neuen Lauf starten* und anschließend die Hosts und Netzwerke für das HA-Paar aus
++
+Sie können bei Bedarf weitere HA-Paare hinzufügen und konfigurieren.
+
+. Wählen Sie *Start*, um den Netzwerkverbindungstest zu starten.
+

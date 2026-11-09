@@ -1,0 +1,196 @@
+---
+sidebar: sidebar 
+permalink: task_adm_licenses.html 
+keywords: administer, administering, web, licenses 
+summary: Es gibt mehrere damit zusammenhängende Aufgaben, die Sie im Rahmen der Verwaltung der ONTAP Select Lizenzen durchführen können. 
+---
+= ONTAP Select Lizenzen verwalten
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Es gibt mehrere damit zusammenhängende Aufgaben, die Sie im Rahmen der Verwaltung der ONTAP Select Lizenzen durchführen können.
+
+
+
+[[manage-the-capacity-tier-licenses]]
+== Verwalten Sie die Kapazitätsstufenlizenzen
+
+Sie können ONTAP Select Capacity Tier-Lizenzen nach Bedarf hinzufügen, bearbeiten und löschen.
+
+.Schritte
+. Melden Sie sich über die Weboberfläche mit dem Administratorkonto beim Deploy-Dienstprogramm an.
+. Wählen Sie oben auf der Seite die Registerkarte *Administration* aus.
+. Wählen Sie *Lizenzen* und wählen Sie *Kapazitätsstufe* aus.
+. Optional können Sie *Filter* auswählen, um die angezeigten Lizenzen einzuschränken.
+. Um eine bestehende Lizenz zu ersetzen, wählen Sie eine Lizenz aus, wählen Sie image:icon_kebab.gif["Optionen"] und wählen Sie *Aktualisieren*.
+. Um eine neue Lizenz hinzuzufügen, wählen Sie oben auf der Seite *Hinzufügen* und anschließend *Lizenz(en) hochladen* aus und wählen Sie eine Lizenzdatei von Ihrem lokalen Workstation aus.
+
+
+
+
+[[manage-the-capacity-pool-licenses]]
+== Verwalten Sie die Kapazitätspoollizenzen
+
+Sie können ONTAP Select Capacity Pool-Lizenzen nach Bedarf hinzufügen, bearbeiten und löschen.
+
+.Schritte
+. Melden Sie sich über die Weboberfläche mit dem Administratorkonto beim Deploy-Dienstprogramm an.
+. Wählen Sie oben auf der Seite die Registerkarte *Administration* aus.
+. Wählen Sie *Lizenzen* und wählen Sie *Kapazitätspools* aus.
+. Optional können Sie *Filter* auswählen, um die angezeigten Lizenzen einzuschränken.
+. Optional können Sie eine Lizenz auswählen und image:icon_kebab.gif["Optionen"] auswählen, um eine bestehende Lizenz zu verwalten.
+. Fügen Sie eine neue Lizenz hinzu oder verlängern Sie eine bestehende Lizenz:
++
+[role="tabbed-block"]
+====
+.Neue Lizenz hinzufügen
+--
+Um eine neue Lizenz hinzuzufügen, wählen Sie oben auf der Seite *Add* aus.
+
+--
+.Bestehende Lizenz verlängern
+--
+So verlängern Sie eine bestehende Lizenz:
+
+.. Wählen Sie image:icon_kebab.gif["Optionen"] auf eine bestehende Lizenz aus.
+.. Wählen Sie *Lizenz(en) hochladen* aus.
+.. Wählen Sie eine Lizenzdatei von Ihrem lokalen Arbeitsplatzrechner aus.
+
+
+--
+====
+. So zeigen Sie eine Liste der Kapazitätspools an:
++
+.. Wählen Sie *Summary*.
+.. Wählen Sie einen Pool aus und erweitern Sie ihn, um die Cluster und Nodes anzuzeigen, die Speicher aus dem Pool beziehen.
+.. Den aktuellen Status der Lizenz können Sie unter *Lizenzinformationen* einsehen.
+.. Sie können die Dauer der für den Pool ausgestellten Mietverträge unter „Ablauf der Mietverträge“ ändern.
+
+
+. Um eine Liste der Cluster anzuzeigen:
++
+.. Wählen Sie *Details*.
+.. Wählen Sie den Cluster aus und erweitern Sie ihn, um die Speicherauslastung anzuzeigen.
+
+
+
+
+
+
+[[reinstall-a-capacity-pool-license]]
+== Eine Kapazitätspoollizenz neu installieren
+
+Jede aktive Capacity Pool-Lizenz ist an eine bestimmte License Manager-Instanz gebunden, die in einer Instanz des Deploy-Verwaltungsprogramms enthalten ist. Wenn Sie eine Capacity Pool-Lizenz verwenden und anschließend die Deploy-Instanz wiederherstellen oder wiederherstellen, ist die ursprüngliche Lizenz nicht mehr gültig. Sie müssen eine neue Capacity-Lizenzdatei generieren und dann die Lizenz in der neuen Deploy-Instanz installieren.
+
+.Bevor Sie beginnen
+* Ermitteln Sie alle von der ursprünglichen Deploy-Instanz verwendeten Capacity Pool-Lizenzen.
+* Wenn Sie im Rahmen der Erstellung der neuen Deploy-Instanz eine Sicherung wiederherstellen, prüfen Sie, ob die Sicherung aktuell und auf dem neuesten Stand ist.
+* Suchen Sie die ONTAP Select Knoten, die zuletzt von der ursprünglichen Deploy-Instanz erstellt wurden (nur wenn kein aktuelles Backup der ursprünglichen Deploy-Instanz auf der neuen Deploy-Instanz wiederhergestellt wurde).
+* Stellen Sie die Deploy-Instanz wieder her oder erstellen Sie sie neu.
+
+
+.Über diese Aufgabe
+Diese Aufgabe besteht im Wesentlichen aus drei Teilen. Sie müssen alle von der Deploy Instanz verwendeten Capacity Pool-Lizenzen neu generieren und installieren. Nachdem alle Lizenzen auf der neuen Deploy Instanz neu installiert wurden, können Sie die Seriennummer bei Bedarf zurücksetzen. Falls sich die Deploy IP-Adresse geändert hat, müssen Sie schließlich jeden ONTAP Select Node aktualisieren, der eine Capacity Pools-Lizenz verwendet.
+
+.Schritte
+. Wenden Sie sich an den NetApp Support und lassen Sie alle Capacity Pool-Lizenzen für die ursprüngliche Deploy-Instanz entbinden und abmelden.
+. Für jede der Capacity Pool-Lizenzen muss eine neue Lizenzdatei beschafft und heruntergeladen werden.
++
+Weitere Informationen enthält link:task_lic_acquire_cp.html["Erwerben Sie eine Kapazitätspool-Lizenz"].
+
+. Installieren Sie die Capacity Pool-Lizenzen auf der neuen Deploy-Instanz:
++
+.. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+.. Wählen Sie oben auf der Seite die Registerkarte *Administration* aus.
+.. Wählen Sie *Lizenzen* und anschließend *Kapazitätspool*.
+.. Wählen Sie *Hinzufügen* und anschließend *Lizenz(en) hochladen*, um die Lizenzen auszuwählen und hochzuladen.
+
+
+. Wenn Sie die neue Deploy-Instanz erstellt haben, ohne eine Sicherung wiederherzustellen, oder wenn Sie eine Sicherung verwendet haben, die nicht aktuell und auf dem neuesten Stand war, müssen Sie die Serienfolgenummer aktualisieren:
++
+.. Melden Sie sich mit dem Administratorkonto an der Befehlszeilenschnittstelle des Deploy-Dienstprogramms an.
+.. Zeigen Sie die Seriennummer des zuletzt von der ursprünglichen Deploy-Instanz erstellten Knotens an:
++
+`node show -cluster-name CLUSTER_NAME -name NODE_NAME -detailed`
+
+.. Extrahieren Sie die letzten acht Ziffern aus der zwanzigstelligen Knotenseriennummer, um die letzte Seriennummer zu erhalten, die von der ursprünglichen Deploy-Instanz verwendet wurde.
+.. Addieren Sie 20 zur Serienfolgenummer, um die neue Serienfolgenummer zu erstellen.
+.. Legen Sie die Seriennummer für die neue Deploy-Instanz fest:
++
+`license-manager modify -serial-sequence SEQ_NUMBER`
+
+
+
+. Wenn die der neuen Deploy-Instanz zugewiesene IP-Adresse von der IP-Adresse der ursprünglichen Deploy-Instanz abweicht, müssen Sie die IP-Adresse auf jedem ONTAP Select-Knoten aktualisieren, der eine Capacity Pools-Lizenz verwendet:
++
+.. Die Anmeldung bei der ONTAP Befehlszeilenschnittstelle des ONTAP Select Node ist erforderlich.
+.. Erweiterten Berechtigungsmodus aktivieren:
++
+`set adv`
+
+.. Aktuelle Konfiguration anzeigen:
++
+`system license license-manager show`
+
+.. Legen Sie die vom Knoten verwendete IP-Adresse des License Manager (Deploy) fest:
++
+`system license license-manager modify -host NEW_IP_ADDRESS`
+
+
+
+
+
+
+
+[[convert-an-evaluation-license-to-a-production-license]]
+[[convert-license]]
+== Eine Testlizenz in eine Produktionslizenz umwandeln
+
+Sie können einen ONTAP Select-Evaluierungscluster mit dem Verwaltungsdienstprogramm Deploy auf die Verwendung einer Produktionslizenz der Capacity Tier upgraden.
+
+.Bevor Sie beginnen
+* Jedem Knoten muss ausreichend Speicherplatz zugewiesen sein, um die Mindestanforderungen für eine Produktionslizenz zu erfüllen.
+* Sie benötigen Capacity Tier-Lizenzen für jeden Knoten im Evaluierungscluster.
+
+
+.Über diese Aufgabe
+Die Änderung der Clusterlizenz eines Einzelknotenclusters führt zu Betriebsunterbrechungen. Bei einem Mehrknotencluster ist dies jedoch nicht der Fall, da der Konvertierungsprozess jeden Knoten einzeln neu startet, um die Lizenz anzuwenden.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Cluster* aus und wählen Sie den gewünschten Cluster aus.
+. Klicken Sie oben auf der Seite mit den Clusterdetails auf *Hier klicken*, um die Clusterlizenz zu ändern.
++
+Sie können auch neben der Evaluierungslizenz im Abschnitt *Clusterdetails* die Option *Ändern* auswählen.
+
+. Wählen Sie für jeden Knoten eine verfügbare Produktionslizenz aus oder laden Sie bei Bedarf zusätzliche Lizenzen hoch.
+. Geben Sie die ONTAP-Zugangsdaten ein und wählen Sie *Ändern*.
++
+Das Lizenz-Upgrade für den Cluster kann einige Minuten dauern. Warten Sie, bis der Vorgang abgeschlossen ist, bevor Sie die Seite verlassen oder andere Änderungen vornehmen.
+
+
+
+.Nachdem Sie fertig sind
+Die ursprünglich jedem Knoten für die Evaluierungsbereitstellung zugewiesenen zwanzigstelligen Knotenseriennummern werden durch die neunstelligen Seriennummern der für das Upgrade verwendeten Produktionslizenzen ersetzt.
+
+
+
+[[manage-an-expired-capacity-pool-license]]
+== Verwalten einer abgelaufenen Kapazitätspoollizenz
+
+Im Allgemeinen passiert nichts, wenn eine Lizenz abläuft. Sie können jedoch keine andere Lizenz installieren, da die Knoten mit der abgelaufenen Lizenz verknüpft sind. Bis zur Lizenzverlängerung sollten Sie _keine_ Aktionen durchführen, die das Aggregat offline nehmen würden, wie z. B. einen Neustart oder ein Failover. Es wird empfohlen, die Lizenzverlängerung zu beschleunigen.
+
+Weitere Informationen zu ONTAP Select und zur Lizenzverlängerung finden Sie im Abschnitt Lizenzen, Installation, Upgrades und Deaktivierungen in der link:reference_faq.html#licenses-installation-upgrades-and-reverts["FAQ"].
+
+
+
+[[manage-add-on-licenses]]
+== Zusatzlizenzen verwalten
+
+Für das Produkt ONTAP Select werden Zusatzlizenzen direkt innerhalb von ONTAP angewendet und nicht über ONTAP Select Deploy verwaltet. Siehe link:https://docs.netapp.com/us-en/ontap/system-admin/manage-licenses-concept.html["Lizenzverwaltung – Übersicht (nur für Cluster-Administratoren)"^] und link:https://docs.netapp.com/us-en/ontap/task_admin_enable_new_features.html["Aktivieren Sie neue Funktionen durch Hinzufügen von Lizenzschlüsseln"^] für weitere Informationen.

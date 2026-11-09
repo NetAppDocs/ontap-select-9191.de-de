@@ -1,0 +1,87 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_mirroring.html 
+keywords: ontap select, ha, high availability, synchronous replication, mirrored aggregates, write path, raid syncmirror, rsm 
+summary: 'Verhindern Sie Datenverlust mit RAID SyncMirror (RSM), gespiegelten Aggregaten und dem Schreibpfad.' 
+---
+= ONTAP Select HA RSM und gespiegelte Aggregate
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Verhindern Sie Datenverlust mit RAID SyncMirror (RSM), gespiegelten Aggregaten und dem Schreibpfad.
+
+
+
+[[synchronous-replication]]
+== Synchrone Replikation
+
+Das ONTAP-HA-Modell basiert auf dem Konzept von HA-Partnern. ONTAP Select erweitert diese Architektur auf nicht gemeinsam genutzte Standardserver, indem es die RAID-SyncMirror (RSM)-Funktionalität nutzt, die in ONTAP vorhanden ist, um Datenblöcke zwischen Clusterknoten zu replizieren und so zwei Kopien der Benutzerdaten auf ein HA-Paar zu verteilen.
+
+Ein Zwei-Node-Cluster mit einem Mediator kann sich über zwei Rechenzentren erstrecken. Weitere Informationen finden Sie im Abschnitt link:reference_plan_best_practices.html#two-node-stretched-ha-metrocluster-sds-best-practices["Zwei-Node-Stretched-HA (MetroCluster SDS) Best Practices"].
+
+
+
+[[mirrored-aggregates]]
+== Gespiegelte Aggregate
+
+Ein ONTAP Select Cluster besteht aus zwei bis zwölf Knoten. Jedes HA-Paar enthält zwei Kopien der Benutzerdaten, die synchron über ein IP-Netzwerk zwischen den Knoten gespiegelt werden. Diese Spiegelung ist für den Benutzer transparent und eine Eigenschaft des Datenaggregats, das während des Datenaggregat-Erstellungsprozesses automatisch konfiguriert wird.
+
+Alle Aggregate in einem ONTAP Select Cluster müssen gespiegelt werden, um die Datenverfügbarkeit im Falle eines Node-Failovers zu gewährleisten und einen SPOF bei Hardwarefehlern zu vermeiden. Aggregate in einem ONTAP Select Cluster werden aus virtuellen Festplatten erstellt, die von jedem Node im HA-Paar bereitgestellt werden, und verwenden die folgenden Festplatten:
+
+* Ein lokaler Satz von Festplatten (beigesteuert vom aktuellen ONTAP Select Node)
+* Ein gespiegelter Satz von Festplatten (beigesteuert vom HA-Partner des aktuellen Knotens)
+
+
+
+NOTE: Die lokalen und die Spiegel-Festplatten, die zum Aufbau eines gespiegelten Aggregats verwendet werden, müssen die gleiche Größe haben. Diese Aggregate werden als Plex 0 und Plex 1 bezeichnet (um die lokalen bzw. entfernten Spiegelpaare zu kennzeichnen). Die tatsächlichen Plex-Nummern können in Ihrer Installation abweichen.
+
+Dieser Ansatz unterscheidet sich grundlegend von der Funktionsweise herkömmlicher ONTAP-Cluster. Dies gilt für alle Root- und Datenträger innerhalb des ONTAP Select Clusters. Das Datenaggregat enthält sowohl lokale als auch gespiegelte Datenkopien. Daher bietet ein Datenaggregat mit N virtuellen Datenträgern den Speicherplatz von N/2 Datenträgern, da die zweite Datenkopie auf eigenen, einzigartigen Datenträgern gespeichert ist.
+
+Die folgende Abbildung zeigt ein HA-Paar innerhalb eines Vier-Node-ONTAP Select Clusters. Innerhalb dieses Clusters befindet sich ein einzelnes Datenaggregat (test), das Speicher von beiden HA-Partnern nutzt. Dieses Datenaggregat besteht aus zwei Sätzen virtueller Festplatten: einem lokalen Satz, bereitgestellt vom ONTAP Select-besitzenden Cluster-Node (Plex 0), und einem Remote-Satz, bereitgestellt vom Failover-Partner (Plex 1).
+
+Plex 0 ist der Bucket, der alle lokalen Festplatten enthält. Plex 1 ist der Bucket, der Spiegelfestplatten enthält, also Festplatten, die eine zweite replizierte Kopie der Benutzerdaten speichern. Der Knoten, dem das Aggregat gehört, steuert Festplatten zu Plex 0 bei, und der HA-Partner dieses Knotens steuert Festplatten zu Plex 1 bei.
+
+Die folgende Abbildung zeigt ein gespiegeltes Aggregat mit zwei Festplatten. Der Inhalt dieses Aggregats wird auf unsere beiden Clusterknoten gespiegelt, wobei die lokale Festplatte NET-1.1 im Plex-0-Bucket und die Remote-Festplatte NET-2.1 im Plex-1-Bucket abgelegt wird. In diesem Beispiel gehört das Aggregat test dem linken Clusterknoten und verwendet die lokale Festplatte NET-1.1 sowie die HA-Partner-Spiegelfestplatte NET-2.1.
+
+*ONTAP Select gespiegeltes Aggregat*image:DDHA_03.jpg["ONTAP Select gespiegeltes Aggregat"]
+
+
+NOTE: Wenn ein ONTAP Select-Cluster bereitgestellt wird, werden alle im System vorhandenen virtuellen Festplatten automatisch dem richtigen Plex zugewiesen, sodass kein zusätzlicher Schritt des Benutzers hinsichtlich der Festplattenzuweisung erforderlich ist. Dies verhindert die versehentliche Zuweisung von Festplatten zu einem falschen Plex und sorgt für eine optimale Spiegel-Festplattenkonfiguration.
+
+
+
+[[write-path]]
+== Schreibpfad
+
+Die synchrone Spiegelung von Datenblöcken zwischen Clusterknoten und die Anforderung, dass kein Datenverlust bei einem Systemausfall auftritt, haben einen erheblichen Einfluss auf den Pfad, den ein eingehender Schreibvorgang bei seiner Ausbreitung durch einen ONTAP Select Cluster nimmt. Dieser Prozess besteht aus zwei Phasen:
+
+* Anerkennung
+* Destaging
+
+
+Schreibvorgänge auf ein Ziel-Volume erfolgen über eine Daten-LIF und werden in die virtualisierte NVRAM-Partition, die sich auf einer Systemfestplatte des ONTAP Select Knotens befindet, geschrieben, bevor sie dem Client bestätigt werden. In einer HA-Konfiguration erfolgt ein zusätzlicher Schritt, da diese NVRAM-Schreibvorgänge sofort auf den HA-Partner des Ziel-Volume-Besitzers gespiegelt werden, bevor sie bestätigt werden. Dieser Prozess stellt die Dateisystemkonsistenz auf dem HA-Partnerknoten sicher, falls es zu einem Hardwareausfall auf dem ursprünglichen Knoten kommt.
+
+Nachdem der Schreibvorgang im NVRAM festgeschrieben wurde, verschiebt ONTAP den Inhalt dieser Partition regelmäßig auf die entsprechende virtuelle Festplatte – ein Vorgang, der als Destaging bezeichnet wird. Dieser Vorgang findet nur einmalig auf dem Cluster-Node statt, der das Ziel-Volume besitzt, und nicht auf dem HA-Partner.
+
+Die folgende Abbildung zeigt den Schreibpfad einer eingehenden Schreibanforderung an einen ONTAP Select Node.
+
+*ONTAP Select Schreibpfad-Workflow* image:DDHA_04.jpg["ONTAP Select Schreibpfad-Workflow"]
+
+Die Empfangsbestätigung für eingehende Schreibvorgänge umfasst die folgenden Schritte:
+
+* Schreibvorgänge gelangen über eine logische Schnittstelle, die dem ONTAP Select Node A zugeordnet ist, in das System.
+* Schreibvorgänge werden im NVRAM von Knoten A gespeichert und auf den HA-Partner, Knoten B, gespiegelt.
+* Sobald die E/A-Anforderung auf beiden HA-Knoten vorliegt, wird die Anforderung dann an den Client zurückgemeldet.
+
+
+ONTAP Select Destaging vom NVRAM zum Datenaggregat (ONTAP CP) umfasst die folgenden Schritte:
+
+* Schreibvorgänge werden vom virtuellen NVRAM in das virtuelle Datenaggregat ausgelagert.
+* Die Spiegelungs-Engine repliziert Blöcke synchron auf beide Plexe.
+

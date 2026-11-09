@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_serial_number.html 
+keywords: license, licensing, Capacity Pools, node serial numbers 
+summary: Beim Capacity Tiers Lizenzmodell entspricht die neunstellige Knotenseriennummer der dem Knoten zugewiesenen Lizenzseriennummer. Die Seriennummern von Knoten, die das Capacity Pools Lizenzmodell verwenden, haben jedoch ein anderes Format. 
+---
+= Knotenseriennummern für das ONTAP Select Capacity Pools Lizenzmodell
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Beim Capacity Tiers Lizenzmodell entspricht die neunstellige Knotenseriennummer der dem Knoten zugewiesenen Lizenzseriennummer. Die Seriennummern von Knoten, die das Capacity Pools Lizenzmodell verwenden, haben jedoch ein anderes Format.
+
+Die Seriennummer eines Knotens, der eine Capacity Pools-Lizenzierung verwendet, hat folgendes Format:
+
+`999 ppppppppp nnnnnnnn`
+
+
+NOTE: Zur besseren Übersicht wurden Leerzeichen eingefügt, diese gehören jedoch nicht zur eigentlichen Seriennummer.
+
+Die folgende Tabelle beschreibt jeden Abschnitt der Knotenseriennummer von links nach rechts.
+
+[cols="15,85"]
+|===
+| Abschnitt | Beschreibung 
+
+
+| '999' | Konstanter dreistelliger Wert, reserviert durch NetApp. 
+
+
+| ppppppppp | Variable neunstellige Lizenzseriennummer, die dem Kapazitätspool von NetApp zugewiesen wird 
+
+
+| nnnnnnnn | Variabler achtstelliger Wert, der vom License Manager für jeden Node unter Verwendung des Capacity Pool generiert wird 
+|===
+
+CAUTION: Wenn Sie einen Fall beim NetApp Support eröffnen, der einen Knoten mit einer Capacity Pool-Lizenz betrifft, müssen Sie die neunstellige Capacity Pool-Lizenz-Seriennummer angeben. Sie können nicht die vollständige zwanzigstellige Knoten-Seriennummer angeben. Sie können die Lizenz-Seriennummer aus der Knoten-Seriennummer ableiten, indem Sie die ersten drei Ziffern der Knoten-Seriennummer („999“) überspringen und die nächsten neun Ziffern (ppppppppp) extrahieren.

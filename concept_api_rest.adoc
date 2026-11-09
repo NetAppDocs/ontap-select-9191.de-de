@@ -1,0 +1,60 @@
+---
+sidebar: sidebar 
+permalink: concept_api_rest.html 
+keywords: rest api, deploy rest api, rest, architecture, resources, state, uri, http, json 
+summary: 'Representational State Transfer (REST) ist ein Stil zur Entwicklung verteilter Webanwendungen. Angewendet auf das Design von Web-Service-APIs, etabliert REST eine Reihe von Technologien und Best Practices für die Bereitstellung serverbasierter Ressourcen und die Verwaltung ihrer Zustände. Es nutzt gängige Protokolle und Standards, um eine flexible Grundlage für die Bereitstellung und Verwaltung von ONTAP Select Clustern zu bieten.' 
+---
+= Informationen zu REST-Webdiensten für die Bereitstellung und Verwaltung von ONTAP Select Clustern
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Representational State Transfer (REST) ist ein Stil zur Entwicklung verteilter Webanwendungen. Angewendet auf das Design von Web-Service-APIs, etabliert REST eine Reihe von Technologien und Best Practices für die Bereitstellung serverbasierter Ressourcen und die Verwaltung ihrer Zustände. Es nutzt gängige Protokolle und Standards, um eine flexible Grundlage für die Bereitstellung und Verwaltung von ONTAP Select Clustern zu bieten.
+
+
+
+[[architecture-and-classic-constraints]]
+== Architektur und klassische Beschränkungen
+
+REST wurde von Roy Fielding in seiner PhD https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm["Dissertation"] an der UC Irvine im Jahr 2000 formal artikuliert. Es definiert einen Architekturstil durch eine Reihe von Einschränkungen, die gemeinsam webbasierte Anwendungen und die zugrunde liegenden Protokolle verbessert haben. Die Einschränkungen etablieren eine RESTful-Webservices-Anwendung auf Basis einer Client/Server-Architektur unter Verwendung eines zustandslosen Kommunikationsprotokolls.
+
+
+
+[[resources-and-state-representation]]
+== Ressourcen und Statusdarstellung
+
+Ressourcen sind die grundlegenden Komponenten eines webbasierten Systems. Bei der Entwicklung einer REST-Webservices-Anwendung gehören folgende frühe Entwurfsaufgaben dazu:
+
+* Identifizierung von System- oder serverbasierten Ressourcen. Jedes System nutzt und verwaltet Ressourcen. Eine Ressource kann eine Datei, eine Geschäftstransaktion, ein Prozess oder eine administrative Einheit sein. Eine der ersten Aufgaben beim Entwurf einer Anwendung auf Basis von REST-Webdiensten ist die Identifizierung der Ressourcen.
+* Definition von Ressourcenzuständen und zugehörigen Zustandsoperationen: Ressourcen befinden sich stets in einem von endlich vielen Zuständen. Die Zustände sowie die zugehörigen Operationen, die Zustandsänderungen bewirken, müssen klar definiert sein.
+
+
+Nachrichten werden zwischen Client und Server ausgetauscht, um auf die Ressourcen zuzugreifen und ihren Zustand gemäß dem generischen CRUD-Modell (Create, Read, Update, and Delete) zu ändern.
+
+
+
+[[uri-endpoints]]
+== URI-Endpunkte
+
+Jede REST-Ressource muss definiert und mithilfe eines klar definierten Adressierungsschemas bereitgestellt werden. Die Endpunkte, an denen die Ressourcen lokalisiert und identifiziert werden, verwenden einen Uniform Resource Identifier (URI). Der URI bietet ein allgemeines Framework zur Erstellung eines eindeutigen Namens für jede Ressource im Netzwerk. Der Uniform Resource Locator (URL) ist eine Art URI, der in Webdiensten verwendet wird, um Ressourcen zu identifizieren und darauf zuzugreifen. Ressourcen werden typischerweise in einer hierarchischen Struktur ähnlich einem Dateiverzeichnis bereitgestellt.
+
+
+
+[[http-messages]]
+== HTTP-Nachrichten
+
+HTTP (Hypertext Transfer Protocol) ist das Protokoll, das von Webdienst-Clients und -Servern zum Austausch von Anfrage- und Antwortnachrichten über die Ressourcen verwendet wird. Als Teil der Entwicklung einer webbasierten Dienstanwendung werden HTTP-Verben (wie GET und POST) den Ressourcen und den entsprechenden Statusverwaltungsaktionen zugeordnet.
+
+HTTP ist zustandslos. Um also eine Reihe zusammengehöriger Anfragen und Antworten einer Transaktion zuzuordnen, müssen zusätzliche Informationen in den HTTP-Headern enthalten sein, die mit den Anfrage-/Antwortdaten übertragen werden.
+
+
+
+[[json-formatting]]
+== JSON-Formatierung
+
+Informationen lassen sich auf verschiedene Weisen strukturieren und zwischen Client und Server übertragen. Die gängigste Option (und diejenige, die auch von der Deploy REST API verwendet wird) ist JavaScript Object Notation (JSON). JSON ist ein Industriestandard zur Darstellung einfacher Datenstrukturen in Klartext und dient der Übertragung von Zustandsinformationen, die Ressourcen beschreiben.

@@ -1,0 +1,97 @@
+---
+sidebar: sidebar 
+permalink: esxi-host-configuration-and-preparation-checklist.html 
+keywords: ontap select, pre-installation checklist, esxi, host preparation 
+summary: Bereiten Sie jeden ESXi-Hypervisor-Host vor, auf dem ein ONTAP Select-Knoten bereitgestellt wird. Bei der Vorbereitung ist die Deployment-Umgebung sorgfältig zu prüfen, um sicherzustellen, dass die Hosts ordnungsgemäß konfiguriert sind und das Deployment eines ONTAP Select Clusters unterstützen können. 
+---
+= Vorbereitung eines ESXi-Hosts für ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Jeder ESXi-Hypervisor-Host, auf dem ein ONTAP Select Knoten eingesetzt wird, muss vorbereitet werden. Prüfen Sie dabei sorgfältig die Bereitstellungsumgebung, um sicherzustellen, dass die Hosts korrekt konfiguriert und für die Bereitstellung eines ONTAP Select Clusters bereit sind.
+
+
+NOTE: Das ONTAP Select Deploy-Verwaltungsprogramm führt die erforderliche Netzwerk- und Speicherkonfiguration der Hypervisor-Hosts nicht durch. Sie müssen jeden Host manuell vorbereiten, bevor Sie ein ONTAP Select Cluster bereitstellen.
+
+
+
+[[step-1-prepare-the-esxi-hypervisor-host]]
+== Schritt 1: Bereiten Sie den ESXi-Hypervisor-Host vor
+
+Überprüfen Sie die Konfiguration des ESXi-Hosts und der Firewall-Ports.
+
+.Schritte
+. Stellen Sie sicher, dass jeder ESXi wie folgt konfiguriert ist:
++
+** Ein vorinstallierter und unterstützter Hypervisor
+** Eine VMware-vSphere-Lizenz
+
+
+. Stellen Sie sicher, dass derselbe vCenter Server alle Hosts verwalten kann, auf denen ein ONTAP Select-Knoten innerhalb des Clusters bereitgestellt ist.
+. Überprüfen Sie, ob die Firewall-Ports so konfiguriert sind, dass der Zugriff auf vSphere erlaubt ist. Diese Ports müssen geöffnet sein, um die serielle Portverbindung zu den ONTAP Select virtuellen Maschinen zu unterstützen.
++
+[role="tabbed-block"]
+====
+.Empfohlen
+--
+NetApp empfiehlt, die folgenden Firewall-Ports zu öffnen, um den Zugriff auf vSphere zu ermöglichen:
+
+** Ports 7200 – 7400 (sowohl eingehender als auch ausgehender Datenverkehr)
+
+
+--
+.Standard
+--
+VMware erlaubt standardmäßig den Zugriff über die folgenden Ports:
+
+** Port 22 und Ports 1024 – 65535 (eingehender Datenverkehr)
+** Ports 0 – 65535 (ausgehender Datenverkehr)
+
+
+--
+====
++
+Weitere Informationen finden sich in der link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vsphere-security-8-0/securing-esxi-hosts/customizing-hosts-with-the-security-profile/esxi-firewall-configuration.html["Broadcom VMware vSphere-Dokumentation"^].
+
+. Machen Sie sich mit den für vCenter erforderlichen Rechten vertraut. Weitere Informationen enthält link:reference_plan_ots_vcenter.html["VMware vCenter Server"].
+
+
+
+
+[[step-2-review-the-ontap-select-cluster-configuration]]
+== Schritt 2: Überprüfen Sie die ONTAP Select Clusterkonfiguration
+
+Sie können ONTAP Select entweder als Multi-Node-Cluster oder als Single-Node-Cluster bereitstellen. In vielen Fällen ist ein Multi-Node-Cluster aufgrund der zusätzlichen Storage-Kapazität und der HA-Fähigkeit vorzuziehen.
+
+Die folgenden Abbildungen veranschaulichen die ONTAP Select Netzwerke, die mit einem Single-Node-Cluster und einem Four-Node-Cluster verwendet werden.
+
+[role="tabbed-block"]
+====
+.Einzelknotencluster
+--
+Die folgende Abbildung veranschaulicht einen Einzelknoten-Cluster. Das externe Netzwerk transportiert Client-, Management- und clusterübergreifenden Replikationsverkehr (SnapMirror/SnapVault).
+
+image:CHK_01.jpg["Einzelknotencluster, der ein Netzwerk anzeigt"]
+
+--
+.Vier-Knoten-Cluster
+--
+Die folgende Abbildung zeigt einen Vier-Node-Cluster mit zwei Netzwerken. Das interne Netzwerk ermöglicht die Kommunikation zwischen den Knoten zur Unterstützung der ONTAP-Cluster-Netzwerkdienste. Das externe Netzwerk transportiert Client-, Management- und clusterübergreifenden Replikationsverkehr (SnapMirror/SnapVault).
+
+image:CHK_02.jpg["Vier-Knoten-Cluster, der zwei Netzwerke darstellt"]
+
+--
+.Einzelner Knoten innerhalb eines Vier-Knoten-Clusters
+--
+Die folgende Abbildung veranschaulicht die typische Netzwerkkonfiguration einer einzelnen ONTAP Select virtuellen Maschine in einem Cluster mit vier Knoten. Es gibt zwei separate Netzwerke: ONTAP-intern und ONTAP-extern.
+
+image:CHK_03.jpg["Einzelner Knoten innerhalb eines Vier-Knoten-Clusters"]
+
+--
+====

@@ -1,0 +1,155 @@
+---
+sidebar: sidebar 
+permalink: task_cluster_expansion_contraction.html 
+keywords: cluster, expand, expansion, contract, contraction, six, eight, node deployment workflow, workflow, deployment steps 
+summary: Ab ONTAP Select 9.15.1 können Sie die Größe eines bestehenden Clusters erhöhen oder verringern. 
+---
+= Ein ONTAP Select Cluster auf ESXi oder KVM Hosts erweitern oder verkleinern
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Erhöhen oder verringern Sie die Clustergröße eines bestehenden ONTAP Select Clusters für ESXi- und KVM-Hypervisor-Hosts. Für beide Hosttypen können Sie die Clustergröße in Schritten zwischen vier und zwölf Knoten erhöhen oder verringern.
+
+Die folgenden Clustererweiterungen und -verkleinerungen werden für ESXi- und KVM-Hosts nicht unterstützt:
+
+* Erweiterungen von Clustern mit einem oder zwei Knoten auf Cluster mit sechs, acht, zehn oder zwölf Knoten.
+* Kontraktionen von Clustern mit sechs, acht, zehn oder zwölf Knoten auf Cluster mit einem oder zwei Knoten.
+
+
+[NOTE]
+====
+Um die Anzahl der Knoten in einem Cluster auf eine Größe zu ändern, die durch Clustererweiterung oder -verkleinerung nicht unterstützt wird, müssen Sie die folgenden Aufgaben ausführen:
+
+. Stellen Sie einen neuen Multi-Node-Cluster mithilfe des link:task_cli_deploy_cluster.html["CLI"] oder des link:task_deploy_cluster.html["Web-Benutzeroberfläche"] bereit, die mit dem ONTAP Select Deploy-Verwaltungsprogramm bereitgestellt werden.
+. Falls zutreffend, migrieren Sie die Daten mithilfe von link:https://docs.netapp.com/us-en/ontap/data-protection/snapmirror-disaster-recovery-concept.html["SnapMirror-Replikation"^] in den neuen Cluster.
+
+
+====
+Sie initiieren die Cluster-Erweiterungs- und -Verkleinerungsprozeduren von ONTAP Select Deploy mithilfe der CLI, API oder Weboberfläche.
+
+
+
+[[hardware-and-storage-considerations]]
+== Hardware- und Speicherüberlegungen
+
+Die Cluster-Erweiterungs- und -Verkleinerungsfunktion wird auf den folgenden KVM- und ESXi-Hypervisor-Hosts unterstützt.
+
+[role="tabbed-block"]
+====
+.ESXi
+--
+Ab ONTAP Select 9.15.1 wird die Clustererweiterung und -verkleinerung auf ESXi-Hypervisor-Hosts unterstützt.
+
+Die Clustererweiterung und -verkleinerung wird für die folgenden ESXi-Hypervisor-Versionen unterstützt:
+
+* ESXi 9.0
+* ESXi 8.0 U3
+* ESXi 8.0 U2
+* ESXi 8.0 U1
+* ESXi 8.0 GA
+
+
+--
+.KVM
+--
+Ab ONTAP Select 9.17.1 wird die Cluster-Erweiterung und -Verkleinerung auf KVM-Hypervisor-Hosts unterstützt.
+
+Die Clustererweiterung und -verkleinerung wird für die folgenden KVM-Hypervisor-Versionen unterstützt:
+
+* Red Hat Enterprise Linux (RHEL) 64-bit 10.1, 10.0, 9.7, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.8, 8.7 und 8.6
+* Rocky Linux 10.1, 10.0, 9.7, 9.6, 9.5, 9.4, 9.3, 9.2, 9.1, 9.0, 8.9, 8.8, 8.7 und 8.6
+
+
+--
+====
+
+
+[[expand-the-cluster]]
+== Cluster erweitern
+
+Verwenden Sie die Cluster-Erweiterungsfunktion, um die Größe eines vorhandenen ONTAP Select Clusters zu erhöhen.
+
+Sie können die Größe eines bestehenden Clusters auf einem ESXi- oder KVM-Host in folgenden Schritten erhöhen:
+
+* Von vier Knoten auf sechs, acht, zehn oder zwölf Knoten
+* Von sechs Knoten auf acht, zehn oder zwölf Knoten
+* Von acht Knoten auf zehn oder zwölf Knoten
+* Von zehn bis zwölf Knoten
+
+
+.Über diese Aufgabe
+Zur Vorbereitung der Clustererweiterung werden neue ESXi- und KVM-Hosts dem Inventar hinzugefügt und die Details der neuen Knoten zugewiesen. Vor Beginn der Clustererweiterung wird ein Netzwerk-Vorabcheck durchgeführt, um das ausgewählte interne Netzwerk zu überprüfen.
+
+.Bevor Sie beginnen
+* Beim Bereitstellen eines Multi-Node-Clusters sollten Sie mit dem Netzwerkverbindungs-Checker vertraut sein. Sie können den Netzwerk-Konnektivitäts-Checker mit dem link:task_adm_connectivity.html["Web-Benutzeroberfläche"] oder dem link:task_cli_connectivity.html["CLI"] ausführen.
+* Vergewissern Sie sich, dass Sie die Lizenzdetails für die neuen Knoten haben.
+
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Cluster* aus und wählen Sie den gewünschten Cluster aus der Liste aus.
+. Auf der Cluster-Detailseite das Zahnradsymbol rechts auf der Seite auswählen und dann *Cluster erweitern* wählen.
+. Navigieren Sie zum Abschnitt *HA Pair 4*.
+. Wählen Sie die folgenden Hochverfügbarkeits- (HA-) Paar-Konfigurationsdetails für das vierte HA-Paar:
++
+** Instanztyp
+** Knotennamen
+** Zugehörige Hypervisor-Hosts
+** Knoten-IP-Adressen
+** Lizenzen
+** Netzwerkkonfiguration
+** Speicherkonfiguration (RAID-Typ und Speicherpools)
+
+
+. Wählen Sie *HA Pair speichern*, um die Konfigurationsdetails zu speichern.
+. Geben Sie die ONTAP-Zugangsdaten ein und wählen Sie *Cluster erweitern*.
+. Wählen Sie *Weiter* und führen Sie die Netzwerkvorprüfung durch, indem Sie *Ausführen* auswählen.
++
+Der Netzwerk-Vorabcheck überprüft, ob das für den ONTAP-Cluster-Datenverkehr ausgewählte interne Netzwerk ordnungsgemäß funktioniert.
+
+. Wählen Sie *Cluster erweitern*, um den Cluster-Erweiterungsprozess zu starten, und wählen Sie dann *OK* im Dialogfeld.
++
+Die Erweiterung des Clusters kann bis zu 45 Minuten dauern.
+
+. Überwachen Sie den mehrstufigen Cluster-Erweiterungsprozess, um zu bestätigen, dass der Cluster erfolgreich erweitert wurde.
+. Auf der Registerkarte *Ereignisse* finden Sie regelmäßige Aktualisierungen zum Fortschritt des Vorgangs. Die Seite wird in regelmäßigen Abständen automatisch aktualisiert.
+
+
+.Nachdem Sie fertig sind
+Nach der Erweiterung des Clusters sollten Sie link:task_cli_clusters.html["Sichern Sie die ONTAP Select Deploy-Konfigurationsdaten"].
+
+
+
+[[contract-the-cluster]]
+== Cluster verkleinern
+
+Verwenden Sie die Clusterverkleinerungsfunktion, um die Größe eines bestehenden ONTAP Select Clusters zu verringern.
+
+Sie können die Größe eines bestehenden Clusters auf einem ESXi- oder KVM-Host in folgenden Schritten verringern:
+
+* Von zwölf Knoten auf zehn, acht, sechs oder vier Knoten
+* Von zehn Knoten auf acht, sechs oder vier Knoten
+* Von acht auf sechs oder vier Knoten
+* Von sechs auf vier Knoten
+
+
+.Über diese Aufgabe
+Das gewünschte HA-Knotenpaar im Cluster wird ausgewählt, um die Clusterverkleinerung während des Verfahrens vorzubereiten.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Cluster* aus und wählen Sie den gewünschten Cluster aus der Liste aus.
+. Auf der Cluster-Detailseite das Zahnradsymbol rechts auf der Seite auswählen und anschließend *Contract Cluster* auswählen.
+. Wählen Sie die HA-Paar-Konfigurationsdetails für jedes HA-Paar aus, das Sie entfernen möchten, und geben Sie die ONTAP-Anmeldeinformationen an. Wählen Sie dann *Contract Cluster* aus.
++
+Es kann bis zu 30 Minuten dauern, bis der Cluster zusammengezogen ist.
+
+. Überwachen Sie den mehrstufigen Cluster-Kontraktionsprozess, um zu bestätigen, dass der Cluster erfolgreich verkleinert wurde.
+. Auf der Registerkarte *Ereignisse* finden Sie regelmäßige Aktualisierungen zum Fortschritt des Vorgangs. Die Seite wird in regelmäßigen Abständen automatisch aktualisiert.
+

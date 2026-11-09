@@ -1,0 +1,100 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_operation.html 
+keywords: license, licensing, Capacity Pools, operation details 
+summary: Das Lizenzmodell „Capacity Pools“ unterscheidet sich vom Modell „Capacity Tiers“. Anstatt jedem einzelnen Knoten dedizierte Speicherkapazität zuzuweisen, wird die Speicherkapazität einem Pool zugeordnet und von mehreren Knoten gemeinsam genutzt. Zur Unterstützung des Capacity Pools-Modells wurden zusätzliche Komponenten und Prozesse entwickelt. 
+---
+= Betriebsdetails zum ONTAP Select Capacity Pools Lizenzmodell
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Das Lizenzmodell „Capacity Pools“ unterscheidet sich vom Modell „Capacity Tiers“. Anstatt jedem einzelnen Knoten dedizierte Speicherkapazität zuzuweisen, wird die Speicherkapazität einem Pool zugeordnet und von mehreren Knoten gemeinsam genutzt. Zur Unterstützung des Capacity Pools-Modells wurden zusätzliche Komponenten und Prozesse entwickelt.
+
+
+
+[[license-manager]]
+== Lizenzmanager
+
+Der Lizenzmanager läuft als separater Prozess innerhalb jeder Instanz des Deploy-Verwaltungsprogramms. Zu den vom Lizenzmanager bereitgestellten Funktionen gehören unter anderem:
+
+* Generieren Sie für jeden Knoten eine eindeutige zwanzigstellige Seriennummer basierend auf der Seriennummer der Capacity Pool-Lizenz
+* Erstellen Sie Kapazitätsleasingverträge aus den gemeinsam genutzten Kapazitätspools basierend auf Anfragen der ONTAP Select Nodes
+* Melden Sie Poolnutzungsinformationen über die Deploy-Benutzeroberfläche.
+
+
+
+
+[[lease-characteristics]]
+== Merkmale des Leasingvertrags
+
+Der für jedes Datenaggregat auf einem Node mit einer Capacity Pool-Lizenz zugewiesene Speicher muss über eine zugehörige Lease verfügen. Der Node fordert eine Storage Lease an, und wenn die Kapazität verfügbar ist, antwortet der License Manager mit einer Lease. Jede Lease hat die folgenden expliziten oder impliziten Attribute:
+
+* Lizenzmanager
++
+Jeder ONTAP Select Node ist einer License Manager Instanz zugeordnet
+
+* Kapazitätspool
++
+Jeder ONTAP Select Node ist einem Capacity Pool zugeordnet
+
+* Speicherzuweisung
++
+Ein bestimmter Kapazitätswert wird im Leasingvertrag zugewiesen
+
+* Ablaufdatum und Uhrzeit
++
+Die Laufzeit der Leases liegt je nach Benutzerkonfiguration zwischen einer Stunde und sieben Tagen.
+
+
+
+
+
+[[license-lock-id]]
+== Lizenz-Sperr-ID
+
+Jede Instanz des Lizenzmanagers und damit auch jede zugehörige Instanz des Bereitstellungsprogramms wird durch eine eindeutige 128-Bit-Nummer identifiziert. Diese Nummer wird mit der neunstelligen Lizenzseriennummer des Kapazitätspools kombiniert, um den Pool an eine bestimmte Lizenzmanager-Instanz (die im Prinzip einer Bereitstellungsinstanz entspricht) zu binden. Sie müssen beide Werte auf der NetApp Support-Website angeben, um die NetApp License File (NLF) zu generieren.
+
+Sie können die Lizenzsperr-ID für Ihre Deploy-Instanz über die Webbenutzeroberfläche auf folgende Weise ermitteln:
+
+* Erste Schritte-Seite
++
+Deploy zeigt diese Seite an, wenn Sie sich zum ersten Mal anmelden. Sie können auch das Dropdown-Menü oben rechts auf der Seite öffnen und *Getting Started* auswählen, um diese Seite anzuzeigen. Die LLID wird im Abschnitt Add Licenses angezeigt.
+
+* Wählen Sie oben auf der Seite die Registerkarte *Administration* und dann *Systeme & AutoSupport* aus.
+
+
+
+
+[[basic-lease-operations]]
+== Grundlegende Leasingvorgänge
+
+Ein ONTAP Select-Knoten muss jedes Mal, wenn ein Datenaggregat erstellt, erweitert oder geändert wird, eine gültige Kapazitätslizenz finden oder anfordern. Sie können eine aus einer vorherigen Anfrage erhaltene, noch gültige Lizenz verwenden oder bei Bedarf eine neue anfordern. Der ONTAP Select-Knoten führt die folgenden Schritte aus, um eine Capacity Pool-Lizenz zu finden:
+
+. Wenn am Node ein bestehender Lease vorliegt, wird dieser verwendet, sofern alle folgenden Bedingungen erfüllt sind:
++
+** Der Mietvertrag ist noch nicht abgelaufen
+** Die Speicheranforderung für das Aggregat überschreitet nicht die Mietkapazität
+
+
+. Falls kein bestehender Lizenzvertrag gefunden werden kann, fordert der Knoten einen neuen Lizenzvertrag vom License Manager an.
+
+
+
+
+[[return-storage-capacity-to-a-capacity-pool]]
+== Speicherkapazität an einen Kapazitätspool zurückgeben
+
+Speicherkapazität wird bedarfsgerecht aus einem Kapazitätspool zugewiesen, wobei jede neue Anfrage den verfügbaren Speicherplatz im Pool verringern kann. Speicherkapazität wird in mehreren Situationen an den Pool zurückgegeben, unter anderem:
+
+* Der Mietvertrag für ein Datenaggregat läuft ab und wird vom Node nicht verlängert.
+* Datenaggregat wird gelöscht
+
+
+
+NOTE: Wenn eine ONTAP Select virtuelle Maschine gelöscht wird, bleiben alle aktiven Leases bis zu ihrem Ablauf gültig. Wenn dies geschieht, wird die Kapazität dem Pool zurückgegeben.

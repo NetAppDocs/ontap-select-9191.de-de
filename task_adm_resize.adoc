@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: task_adm_resize.html 
+keywords: administer, administering, web, resizing nodes, resizing 
+summary: Nach der Bereitstellung eines ONTAP Select Clusters können Sie den Hypervisor-Instanztyp der Knoten mithilfe des Deploy Verwaltungstools aktualisieren. 
+---
+= ONTAP Select Clusterknoten skalieren
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Nach der Bereitstellung eines ONTAP Select Clusters können Sie den Hypervisor-Instanztyp der Knoten mithilfe des Deploy Verwaltungstools aktualisieren.
+
+
+NOTE: Sie können die Größenänderung der Clusterknoten durchführen, wenn Sie das Lizenzmodell Capacity Tiers und das Lizenzmodell Capacity Pools verwenden.
+
+
+NOTE: Die Größenänderung auf den großen Instanztyp wird nur auf ESXi unterstützt.
+
+.Bevor Sie beginnen
+Der Cluster muss sich im Online-Zustand befinden.
+
+.Über diese Aufgabe
+Diese Aufgabe beschreibt, wie Sie die Deploy-Weboberfläche verwenden. Sie können auch die Deploy-Befehlszeile (CLI) verwenden, um die Instanzgröße anzupassen. Unabhängig davon, welche Oberfläche Sie verwenden, kann die für die Größenänderung benötigte Zeit je nach verschiedenen Faktoren erheblich variieren und es kann eine längere Zeit dauern, bis der Vorgang abgeschlossen ist. Sie können einen Knoten nur auf eine größere Größe skalieren.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Cluster* aus und wählen Sie dann den gewünschten Cluster aus der Liste aus.
+. Auf der Cluster-Detailseite das Zahnradsymbol rechts auf der Seite auswählen und *Instanzgröße ändern* wählen.
+. Wählen Sie den *Instanztyp* aus und geben Sie die ONTAP Zugangsdaten ein, dann wählen Sie *Ändern*.
+
+
+.Nachdem Sie fertig sind
+Sie müssen warten, bis der Größenänderungsvorgang abgeschlossen ist.

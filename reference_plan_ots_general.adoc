@@ -1,0 +1,190 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_general.html 
+keywords: plan, planning, general requirements 
+summary: Es gibt einige allgemeine Anforderungen, die Sie bei der Planung einer ONTAP Select Bereitstellung berücksichtigen sollten. 
+---
+= ONTAP Select Anforderungen und Planungsüberlegungen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Bei der Planung einer ONTAP Select-Bereitstellung sollten Sie einige allgemeine Anforderungen berücksichtigen.
+
+
+
+[[required-linux-knowledge-and-skills-for-kvm]]
+== Erforderliche Linux-Kenntnisse und -Fähigkeiten für KVM
+
+Linux mit dem KVM-Hypervisor ist eine komplexe Umgebung, in der man arbeitet. Bevor Sie ONTAP Select auf KVM bereitstellen, müssen Sie über die notwendigen Kenntnisse und Fähigkeiten verfügen.
+
+Linux-Server-Distribution:: Sie sollten Erfahrung mit der spezifischen Linux-Distribution haben, die für Ihre ONTAP Select Deployment verwendet werden soll. Insbesondere sollten Sie die folgenden Aufgaben durchführen können:
++
+--
+* Installieren Sie die Linux-Distribution
+* Konfigurieren Sie das System mithilfe der CLI.
+* Fügen Sie Softwarepakete sowie alle Abhängigkeiten hinzu
+
+
+--
+
+
+Weitere Informationen zur Vorbereitung Ihres Linux-Servers, einschließlich der erforderlichen Konfiguration und Softwarepakete, finden Sie in der link:kvm-host-configuration-and-preparation-checklist.html["Checkliste für die Hostkonfiguration"]. Beachten Sie die Hypervisor-Anforderungen für die aktuell unterstützten Linux-Distributionen.
+
+KVM-Bereitstellung und -Verwaltung:: Sie sollten mit allgemeinen Virtualisierungskonzepten vertraut sein. Darüber hinaus gibt es mehrere Linux-CLI-Befehle, die Sie im Rahmen der Installation und Administration von ONTAP Select in einer KVM-Umgebung verwenden müssen:
++
+--
+* `virt-install`
+* `virsh`
+* `lsblk`
+* `lvs`
+* `vgs`
+* `pvs`
+
+
+--
+Netzwerk- und Open vSwitch-Konfiguration:: Sie sollten mit Netzwerkkonzepten und der Konfiguration von Netzwerkswitches vertraut sein. Darüber hinaus sollten Sie Erfahrung mit Open vSwitch haben. Im Rahmen der Konfiguration des ONTAP Select Netzwerks in einer KVM-Umgebung müssen Sie die folgenden Netzwerkbefehle verwenden:
++
+--
+* `ovs-vsctl`
+* `ip`
+* `ip link`
+* `systemctl`
+
+
+--
+
+
+
+
+[[cluster-size-and-related-considerations]]
+== Clustergröße und damit verbundene Überlegungen
+
+Es gibt mehrere Planungsaspekte im Zusammenhang mit der Clustergröße, die Sie berücksichtigen sollten.
+
+Anzahl der Knoten im Cluster:: Ein ONTAP Select-Cluster besteht aus einem, zwei, vier, sechs, acht, zehn oder zwölf Knoten. Sie sollten die Größe des Clusters anhand der Applikationsanforderungen bestimmen. Wenn beispielsweise für eine Implementierung in der Produktion Hochverfügbarkeit benötigt wird, sollte ein Cluster mit mehreren Knoten verwendet werden.
+Dedizierte versus zusammengelegte:: Abhängig vom Anwendungstyp sollten Sie entscheiden, ob die Bereitstellung dem dedizierten oder dem gemeinsam genutzten Modell folgt. Beachten Sie, dass das gemeinsam genutzte Modell aufgrund der Workload-Diversität und der engeren Integration komplexer sein kann.
+
+
+
+
+[[hypervisor-host-considerations]]
+== Überlegungen zum Hypervisor-Host
+
+Es gibt mehrere Planungsaspekte im Zusammenhang mit dem Hypervisor-Host, die Sie berücksichtigen sollten.
+
+
+CAUTION: Sie sollten die Konfiguration einer ONTAP Select-VM nicht direkt ändern, es sei denn, Sie werden vom NetApp Support dazu aufgefordert. Eine virtuelle Maschine sollte ausschließlich über das Deploy-Verwaltungsprogramm konfiguriert und geändert werden. Änderungen an einer ONTAP Select-VM außerhalb des Deploy-Programms ohne Unterstützung des NetApp Supports können zum Ausfall der virtuellen Maschine und deren Unbrauchbarkeit führen.
+
+Hypervisor unabhängig:: Sowohl ONTAP Select als auch das ONTAP Select Deploy Verwaltungsprogramm sind hypervisorunabhängig. Die folgenden Hypervisoren werden von beiden unterstützt.
++
+--
+* VMware ESXi
+* Kernelbasierte virtuelle Maschine (KVM)
+
+
+--
+
+
+
+NOTE: Ab ONTAP Select 9.14.1 wird der KVM-Hypervisor wieder unterstützt. Zuvor war die Unterstützung für die Bereitstellung neuer Cluster auf einem KVM-Hypervisor in ONTAP Select 9.10.1 entfernt worden und die Unterstützung für die Verwaltung bestehender KVM-Cluster und -Hosts, mit Ausnahme der Offline-Schaltung oder Löschung, in ONTAP Select 9.11.1 entfernt worden.
+
+Beziehen Sie sich auf die hypervisorspezifischen Planungshinweise und link:reference_release_notes.html["Versionshinweise"] für weitere Details zu den unterstützten Plattformen.
+
+Hypervisor für ONTAP Select Nodes und Verwaltungsdienstprogramm:: Sowohl das Deploy-Verwaltungsprogramm als auch die ONTAP Select Nodes laufen als virtuelle Maschinen. Der Hypervisor, den Sie für das Deploy Dienstprogramm auswählen, ist unabhängig von dem Hypervisor, den Sie für die ONTAP Select Knoten auswählen. Bei der Kombination der beiden Komponenten haben Sie volle Flexibilität:
++
+--
+* Das auf VMware ESXi ausgeführte Bereitstellungsprogramm kann ONTAP Select Cluster entweder auf VMware ESXi oder KVM erstellen und verwalten.
+* Das auf KVM ausgeführte Bereitstellungsprogramm kann ONTAP Select Cluster entweder auf VMware ESXi oder KVM erstellen und verwalten.
+
+
+--
+Eine oder mehrere Instanzen von ONTAP Select Node pro Host:: Jeder ONTAP Select-Knoten läuft als dedizierte virtuelle Maschine. Sie können mehrere Knoten auf demselben Hypervisor-Host erstellen, wobei folgende Einschränkungen gelten:
++
+--
+* Mehrere Knoten eines einzelnen ONTAP Select Clusters können nicht auf demselben Host ausgeführt werden. Alle Knoten auf einem bestimmten Host müssen aus unterschiedlichen ONTAP Select Clustern stammen.
+* Sie müssen externen Speicher verwenden.
+* Bei Verwendung von Software-RAID kann nur ein ONTAP Select Node auf dem Host bereitgestellt werden.
+
+
+--
+Hypervisor-Konsistenz für die Knoten innerhalb eines Clusters:: Alle Hosts innerhalb eines ONTAP Select Clusters müssen auf derselben Version und demselben Release der Hypervisor-Software laufen.
+Anzahl der physischen Ports an jedem Host:: Sie müssen jeden Host so konfigurieren, dass er einen, zwei oder vier physische Ports verwendet. Obwohl Sie bei der Konfiguration der Netzwerkports flexibel sind, sollten Sie nach Möglichkeit diese Empfehlungen befolgen:
++
+--
+* Ein Host in einem Einzelknoten-Cluster sollte über zwei physische Ports verfügen.
+* Jeder Host in einem Multi-Node-Cluster sollte vier physische Ports haben
+
+
+--
+Integration von ONTAP Select mit einem hardwarebasierten ONTAP Cluster:: Sie können einen ONTAP Select Node nicht direkt zu einem ONTAP hardwarebasierten Cluster hinzufügen. Sie können jedoch optional eine Cluster-Peering-Beziehung zwischen einem ONTAP Select Cluster und einem hardwarebasierten ONTAP Cluster herstellen.
+
+
+
+
+[[storage-considerations]]
+== Storage-Überlegungen
+
+Es gibt mehrere Planungsaspekte im Zusammenhang mit dem Host-Speicher, die Sie berücksichtigen sollten.
+
+RAID-Typ:: Bei der Verwendung von direkt angeschlossenem Speicher (DAS) auf ESXi sollten Sie entscheiden, ob Sie einen lokalen hardwarebasierten RAID-Controller oder die Software-RAID-Funktion von ONTAP Select verwenden. Wenn Sie Software-RAID verwenden, siehe link:reference_plan_ots_storage.html["Speicher- und RAID-Überlegungen"] für weitere Informationen.
+Lokaler Speicher:: Bei Verwendung eines lokalen Speichers, der von einem RAID-Controller verwaltet wird, müssen Sie Folgendes entscheiden:
++
+--
+* Ob eine oder mehrere RAID-Gruppen verwendet werden sollen
+* Ob eine oder mehrere LUNs verwendet werden sollen
+
+
+--
+Externer Speicher:: Bei der Verwendung der ONTAP Select vNAS-Lösung müssen Sie festlegen, wo sich die Remote-Datenspeicher befinden und wie auf sie zugegriffen wird. ONTAP Select vNAS unterstützt die folgenden Konfigurationen:
++
+--
+* VMware vSAN
+* Generisches externes Speicherarray
+
+
+--
+Schätzen Sie den benötigten Speicherplatz:: Sie sollten den benötigten Speicherplatz für die ONTAP Select Nodes ermitteln. Diese Information ist für den Erwerb der gekauften Lizenzen mit Speicherkapazität erforderlich. Weitere Informationen finden Sie unter Storage capacity restrictions.
+
+
+
+NOTE: Die ONTAP Select Speicherkapazität entspricht der maximal zulässigen Größe der an die ONTAP Select virtuelle Maschine angeschlossenen Datenträger.
+
+Lizenzmodell für Implementierung in der Produktion:: Sie müssen das Lizenzmodell Capacity Tiers oder Capacity Pools für jeden ONTAP Select Cluster auswählen, der in einer Produktionsumgebung implementiert wird. Weitere Informationen finden Sie im Abschnitt „Lizenz“.
+
+
+
+
+[[authentication-using-the-credential-store]]
+== Authentifizierung mithilfe des Anmeldeinformationsspeichers
+
+Der ONTAP Select Deploy-Anmeldeinformationsspeicher ist eine Datenbank mit Kontoinformationen. Deploy verwendet die Anmeldeinformationen, um im Rahmen der Clustererstellung und des Cluster-Managements die Host-Authentifizierung durchzuführen. Für die Planung eines ONTAP Select Deployment ist es wichtig zu wissen, wie der Anmeldeinformationsspeicher verwendet wird.
+
+
+NOTE: Die Kontoinformationen werden sicher in der Datenbank gespeichert, indem der Advanced Encryption Standard (AES)-Verschlüsselungsalgorithmus und der SHA-256-Hashing-Algorithmus verwendet werden.
+
+Arten von Anmeldeinformationen:: Folgende Arten von Anmeldeinformationen werden unterstützt:
++
+--
+* Host
++
+Die *Host*-Anmeldeinformationen werden verwendet, um einen Hypervisor-Host im Rahmen der Bereitstellung eines ONTAP Select Knotens direkt auf ESXi oder KVM zu authentifizieren.
+
+* vcenter
++
+Die *vcenter*-Anmeldeinformationen werden verwendet, um einen vCenter-Server im Rahmen der Bereitstellung eines ONTAP Select Knotens auf ESXi zu authentifizieren, wenn der Host von VMware vCenter verwaltet wird.
+
+
+
+--
+Zugang:: Der Zugriff auf den Anmeldeinformationsspeicher erfolgt intern im Rahmen normaler administrativer Aufgaben mit Deploy, beispielsweise beim Hinzufügen eines Hypervisor-Hosts. Sie können den Anmeldeinformationsspeicher auch direkt über die Deploy Web-Benutzeroberfläche und die Deploy CLI verwalten.
+
+
+.Verwandte Informationen
+* link:reference_plan_ots_storage.html["Speicher- und RAID-Überlegungen"]
+

@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: concept_nw_supported_configs.html 
+keywords: ontap select, supported network configurations 
+summary: Wählen Sie die beste Hardware und konfigurieren Sie Ihr Netzwerk, um Leistung und Ausfallsicherheit zu optimieren. 
+---
+= Unterstützte ONTAP Select-Netzwerkkonfigurationen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Wählen Sie die beste Hardware und konfigurieren Sie Ihr Netzwerk, um Leistung und Ausfallsicherheit zu optimieren.
+
+Serverhersteller wissen, dass Kunden unterschiedliche Bedürfnisse haben und Wahlmöglichkeiten entscheidend sind. Daher stehen beim Kauf eines physischen Servers zahlreiche Optionen für die Netzwerkanbindung zur Verfügung. Die meisten Standard-Systeme werden mit verschiedenen NIC-Optionen ausgeliefert, die Single-Port- und Multiport-Optionen mit unterschiedlichen Kombinationen von Geschwindigkeit und Durchsatz bieten. Dies schließt die Unterstützung von 25Gb/s- und 40Gb/s-NIC-Adaptern mit VMware ESX ein.
+
+Da die Leistung der ONTAP Select VM direkt von den Eigenschaften der zugrunde liegenden Hardware abhängt, führt die Erhöhung des Durchsatzes zur VM durch die Auswahl schnellerer NICs zu einem leistungsfähigeren Cluster und einer insgesamt besseren Benutzererfahrung. Vier 10-Gb-NICs oder zwei schnellere NICs (25/40 Gb/s) können verwendet werden, um ein leistungsstarkes Netzwerk-Layout zu erreichen. Es werden auch weitere Konfigurationen unterstützt. Für Cluster mit zwei Knoten werden 4 x 1-Gb-Ports oder 1 x 10-Gb-Ports unterstützt. Für Cluster mit einem Knoten werden 2 x 1-Gb-Ports unterstützt.
+
+.Minimale und empfohlene Netzwerkkonfigurationen
+Je nach Clustergröße stehen verschiedene Ethernet-Konfigurationen zur Verfügung.
+
+[cols="30,35,35"]
+|===
+| Clustergröße | Mindestanforderungen | Empfehlung 
+
+
+| Einzelknotencluster | 2 x 1GbE | 2 x 10GbE 
+
+
+| Zwei-Knoten-Cluster oder MetroCluster SDS | 4 x 1GbE oder 1 x 10GbE | 2 x 10GbE 
+
+
+| Cluster mit vier, sechs, acht, zehn oder zwölf Knoten | 2 x 10GbE | 4 x 10GbE oder 2 x 25/40GbE 
+|===
+
+NOTE: Die Konvertierung zwischen Single-Link- und Multiple-Link-Topologien in einem laufenden Cluster wird nicht unterstützt, da möglicherweise für jede Topologie unterschiedliche NIC-Teaming-Konfigurationen erforderlich sind.
+
+.Netzwerkkonfiguration mit mehreren physischen Switches
+Wenn ausreichend Hardware vorhanden ist, empfiehlt NetApp, die in der folgenden Abbildung dargestellte Multiswitch-Konfiguration zu verwenden, da diese einen zusätzlichen Schutz vor physischen Switch-Ausfällen bietet.
+
+image:BP_02.jpg["Netzwerkkonfiguration mit mehreren physischen Switches"]

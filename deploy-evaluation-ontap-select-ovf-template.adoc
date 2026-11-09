@@ -1,0 +1,69 @@
+---
+sidebar: sidebar 
+permalink: deploy-evaluation-ontap-select-ovf-template.html 
+keywords: ontap, select, ovf, template, deployment, evaluation, license 
+summary: Sie können eine 90-tägige Testversion einer Single-Node-ONTAP Select-Cluster-Instanz bereitstellen. 
+---
+= Stellen Sie eine 90-tägige Testinstanz eines ONTAP Select Clusters bereit.
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sie können eine 90-tägige Testversion eines ONTAP Select-Clusters mit einer Größe von einem bis zu 99 Knoten mithilfe einer OVF-Vorlage auf VMware ESXi bereitstellen. Sie können eine Testlizenz herunterladen, wenn Sie Bestandskunde oder Neukunde sind. Zum Beispiel sind Sie bereits Kunde und möchten eine neue Konfiguration ausprobieren, bevor Sie eine Lizenz erwerben.
+
+.Über diese Aufgabe
+* Sie benötigen keine Seriennummer oder Speicherkapazitätslizenz von NetApp.
+* Sie können den gleichen Speicherplatz für Benutzerdaten zuweisen wie eine erworbene Lizenz.
+* Sie können nur ein vCenter-Konto verwenden, um die OVF-Vorlage bereitzustellen. Die direkte Installation auf einem ESXi-Host wird derzeit nicht unterstützt.
+* Sie müssen die OVF-Vorlage (in einer OVA-Datei enthalten) mithilfe des vSphere Standalone-Clients oder des vSphere Webclients installieren (die einzige Option für ESXi 8.0 und höher). Sie verwenden das Verwaltungsprogramm ONTAP Select Deploy nicht.
+
+
+
+
+[[step-1-prepare-the-ontap-select-cluster-host]]
+== Schritt 1: ONTAP Select-Clusterhost vorbereiten
+
+Beachten Sie die folgenden Anforderungen, um den ESXi-Host vorzubereiten, auf dem der ONTAP Select Cluster bereitgestellt wird. Die Plattformbeschreibung basiert auf der Konfiguration des Standard- oder kleinen Instanztyps mit lokal direkt angeschlossenem Speicher (DAS), der mit dem VMFS-5- oder VMFS-6-Dateisystem formatiert ist.
+
+image:prepare_ESXi_host_requirements.png["Anforderungen zur Vorbereitung des ESXi-Hosts"]
+
+Weitere Informationen zu den Host-Konfigurationsoptionen finden Sie in der link:esxi-host-configuration-and-preparation-checklist.html["ONTAP Select Installationsdokumentation"].
+
+
+
+[[step-2-deploy-a-single-node-ontap-select-cluster-using-an-ovf-template]]
+== Schritt 2: Bereitstellung eines Single-Node-ONTAP Select Clusters mithilfe einer OVF-Vorlage
+
+Führen Sie die folgenden Schritte auf einem unterstützten 64-Bit ESXi-Hostserver durch.
+
+.Schritte
+. Gehen Sie zur NetApp Evaluation Products Program-Seite und wählen Sie *ONTAP Select* aus, um die ONTAP Select OVF-Vorlage auf Ihre lokale Workstation herunterzuladen.
+. Die Anmeldung beim VMware vSphere Web Client erfolgt mit einem Konto mit Administratorrechten.
+. Wählen Sie den Host mithilfe einer der folgenden Optionen aus:
++
+** Wählen Sie *Datei* > *OVF-Vorlage bereitstellen*.
+** Wählen Sie *Rechenzentrum* aus. Klicken Sie dann mit der rechten Maustaste und wählen Sie *OVF-Vorlage bereitstellen* aus.
+
+
+. Wählen Sie die ONTAP Select Quell-OVA-Datei auf Ihrer lokalen Workstation aus, dann wählen Sie *Weiter*.
+. Überprüfen Sie die Details der OVF-Vorlage und wählen Sie *Weiter*.
+. Lesen Sie die Details der Endbenutzer-Lizenzvereinbarung (EULA) und wählen Sie *Akzeptieren*. Anschließend wird *Weiter* ausgewählt.
+. Geben Sie den Namen der neuen virtuellen Maschine ein und wählen Sie *Weiter*.
+. Sind mehrere Datenspeicher verfügbar, wählen Sie den Datenspeicher aus und wählen Sie *Weiter*.
+. Wählen Sie *Thick Provision Lazy Zeroed* und anschließend *Weiter*.
+. Wählen Sie die Daten- und Managementnetzwerke aus und klicken Sie dann auf *Weiter*.
+. Geben Sie auf der Seite *Eigenschaften* alle erforderlichen Werte ein und wählen Sie *Weiter*.
+. Überprüfen Sie die Bereitstellungsdetails und wählen Sie *Einschalten nach der Bereitstellung*.
+. Wählen Sie *Fertigstellen*, um den Bereitstellungsprozess zu starten.
+. Nachdem das ONTAP Select-Cluster bereitgestellt wurde, können Sie das Cluster über den System Manager oder die CLI-Schnittstelle konfigurieren. Sie müssen die Festplatte mit dem standardmäßigen ONTAP *disk assign*-Vorgang zuweisen.
+
+
+.Verwandte Informationen
+* link:concept_lic_evaluation.html["Erfahren Sie mehr über Evaluierungslizenzen für ONTAP Select Bereitstellungen"]
+* link:http://mysupport.netapp.com/matrix["Interoperabilitätsmatrix-Tool"^]
+

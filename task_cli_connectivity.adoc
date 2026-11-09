@@ -1,0 +1,60 @@
+---
+sidebar: sidebar 
+permalink: task_cli_connectivity.html 
+keywords: administer, administering, cli, connectivity, network connectivity, network checker 
+summary: Sie können die Netzwerkverbindung zwischen zwei oder mehr ONTAP Select Knoten im internen Clusternetzwerk testen. Sie führen diesen Test typischerweise durch, bevor ein Multi-Node-Cluster bereitgestellt wird, um Probleme zu erkennen, die dazu führen könnten, dass der Vorgang fehlschlägt. 
+---
+= Netzwerkverbindung zwischen ONTAP Select Knoten bestätigen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sie können die Netzwerkverbindung zwischen zwei oder mehr ONTAP Select Knoten im internen Clusternetzwerk testen. Sie führen diesen Test typischerweise durch, bevor ein Multi-Node-Cluster bereitgestellt wird, um Probleme zu erkennen, die dazu führen könnten, dass der Vorgang fehlschlägt.
+
+.Bevor Sie beginnen
+Alle im Test enthaltenen ONTAP Select-Knoten müssen konfiguriert und eingeschaltet sein.
+
+.Über diese Aufgabe
+Bei jedem Teststart wird im Hintergrund ein neuer Prozesslauf erstellt und mit einer eindeutigen Lauf-ID versehen. Es kann jeweils nur ein Lauf aktiv sein.
+
+Der Test verfügt über zwei Modi, die seinen Ablauf steuern:
+
+* Schnell. Dieser Modus führt einen grundlegenden, nicht-unterbrechenden Test durch. Es wird ein PING-Test durchgeführt, zusammen mit einem Test der Netzwerk-MTU-Größe und der vSwitch.
+* Der erweiterte Modus führt einen umfassenderen Test aller redundanten Netzwerkpfade durch. Wenn Sie dies auf einem aktiven ONTAP Select Cluster ausführen, kann die Performance des Clusters beeinträchtigt werden.
+
+
+
+NOTE: Es wird empfohlen, vor der Erstellung eines Multi-Node-Clusters stets einen Schnelltest durchzuführen. Nach erfolgreichem Abschluss des Schnelltests können Sie optional einen erweiterten Test basierend auf Ihren Produktionsanforderungen durchführen.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Deploy-Utility-CLI an.
+. Zeigen Sie die aktuellen Ausführungen des Netzwerkverbindungsprüfers an und vergewissern Sie sich, dass keine Ausführungen aktiv sind:
++
+`network connectivity-check show`
+
+. Starten Sie den Netzwerkverbindungsprüfer und notieren Sie sich die Ausführungskennung in der Befehlsausgabe:
++
+`network connectivity-check start -host-names HOSTNAMES -vswitch-type VSWITCH_TYPE-mode MODE`
+
++
+Beispiel
+
++
+[listing]
+----
+network connectivity-check start -host-names 10.234.81.14
+10.234.81.15 -vswitch-type StandardVSwitch -mode quick
+----
+. Überwachen Sie den Fortschritt der Netzwerkverbindungsprüfung anhand der Ausführungskennung:
++
+`network connectivity-check show -run-id RUN_ID`
+
+
+
+.Nachdem Sie fertig sind
+Der Netzwerkverbindungsprüfer bereinigt normalerweise, indem er alle temporären Ports und IP-Adressen entfernt, die der ONTAP-Internal-Portgruppe hinzugefügt wurden. Wenn der Verbindungsprüfer jedoch die temporären Ports nicht entfernen kann, müssen Sie eine manuelle Bereinigung durchführen, indem Sie den CLI-Befehl mit der Option  `-mode cleanup` erneut ausführen. Wenn Sie die temporären Ports nicht aus der ONTAP-Internal-Portgruppe entfernen, wird die ONTAP Select-VM möglicherweise nicht erfolgreich erstellt.

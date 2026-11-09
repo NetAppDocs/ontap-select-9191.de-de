@@ -1,0 +1,80 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_before.html 
+keywords: administer, administering, web, before you begin 
+summary: Nach der Erstellung eines ONTAP Select Clusters können Sie die Bereitstellung durch verschiedene administrative Aufgaben unterstützen. Dabei sind einige allgemeine Punkte zu beachten. 
+---
+= Informationen zur Administration von ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Nach der Erstellung eines ONTAP Select Clusters können Sie die Bereitstellung durch verschiedene administrative Aufgaben unterstützen. Dabei sind einige allgemeine Punkte zu beachten.
+
+Im Allgemeinen lassen sich die über die Deploy-Weboberfläche durchführbaren Verfahren in drei Kategorien einteilen.
+
+.Bereitstellen eines ONTAP Select-Clusters
+Sie können einen Einzelknoten- oder einen Mehrknotencluster bereitstellen. Weitere Informationen enthält link:task_deploy_cluster.html["Bereitstellen eines ONTAP Select-Clusters"].
+
+.Führen Sie eine Prozedur mit einem vorhandenen ONTAP Select Cluster durch.
+Die administrativen Abläufe sind in verschiedene Kategorien unterteilt, wie zum Beispiel _Sicherheit_ und _Cluster_.
+
+.Führen Sie eine Prozedur im Deploy-Dienstprogramm durch.
+Für Deploy gibt es mehrere spezifische Verfahren (wie das Ändern des Administratorpassworts).
+
+
+
+[[administer-ontap-select]]
+== ONTAP Select verwalten
+
+Es stehen viele verschiedene Verwaltungsverfahren zur Unterstützung von ONTAP Select zur Verfügung. Darüber hinaus gibt es spezifische Verfahren für das Verwaltungsprogramm Deploy. Die wichtigsten dieser Verfahren werden im Folgenden vorgestellt. Im Allgemeinen nutzen alle die Deploy-Webbenutzeroberfläche.
+
+
+NOTE: Sie können auch link:https://docs.netapp.com/us-en/ontap-select/task_cli_signing_in.html["Verwenden Sie die Befehlszeile"] verwenden, um ONTAP Select zu verwalten.
+
+
+
+[[perform-additional-ontap-configuration]]
+== Führen Sie zusätzliche ONTAP-Konfigurationen durch
+
+Nach der Bereitstellung eines ONTAP Select-Clusters können Sie diesen genauso konfigurieren und verwalten wie ein hardwarebasiertes ONTAP-System. Beispielsweise können Sie ONTAP System Manager oder die ONTAP CLI verwenden, um den ONTAP Select-Cluster zu konfigurieren.
+
+.NetApp Client-Software
+Sie können sich mit ONTAP Select über die folgenden unterstützten NetApp Client-Softwareprogramme verbinden:
+
+* ONTAP System Manager
+* Active IQ Unified Manager
+* OnCommand Insight
+* OnCommand Workflow Automation
+* SnapCenter
+* Virtuelle Speicherkonsole für VMware vSphere
+
+
+Um die unterstützten Versionen der Client-Software zu ermitteln, überprüfen Sie die link:https://mysupport.netapp.com/matrix/["Interoperabilitätsmatrix-Tool"^]. Wenn die Client-Software ONTAP 9 unterstützt, wird dieselbe Version auch mit ONTAP Select unterstützt.
+
+
+NOTE: Die Nutzung von SnapCenter und den zugehörigen Plug-ins erfordert serverbasierte Lizenzen. Die Lizenzierung der SnapCenter-Plug-ins für Speichersysteme wird derzeit von ONTAP Select nicht unterstützt.
+
+Jegliche andere NetApp Client-Software, die nicht in der Liste enthalten ist, wird von ONTAP Select nicht unterstützt.
+
+.Mögliche Konfigurationsoptionen
+Für die Konfiguration des Clusters stehen verschiedene Optionen zur Verfügung, darunter die folgenden:
+
+* Erstellen der Netzwerkkonfiguration
+* Auslegen Ihrer Aggregate
+* Erstellung der Datenspeicher-VMs (SVMs)
+
+
+.Gekaufte Lizenzen mit Speicherkapazität
+Falls Sie sich entschieden haben, die Lizenzdateien mit Speicherkapazität nicht im Rahmen der Bereitstellung des ONTAP Select Clusters zu installieren, müssen Sie die Lizenzdateien erwerben und installieren, bevor die Kulanzfrist für Cluster abläuft, die mit einer erworbenen Lizenz betrieben werden.
+
+.Gespiegelte Aggregate
+Das Verwaltungsprogramm „Deploy“ erstellt auf jedem ONTAP Select Knoten Datenersatzdatenträger aus dem nutzbaren Datenspeicherbereich (z. B. Pool0 und Pool1). Um Hochverfügbarkeit für Ihre Daten in einem Cluster mit mehreren Knoten zu gewährleisten, müssen Sie ein gespiegeltes Aggregat unter Verwendung dieser Ersatzdatenträger erstellen.
+
+
+NOTE: Die Übernahme bei hoher Verfügbarkeit wird nur unterstützt, wenn Datenaggregate als gespiegelte Aggregate konfiguriert sind.

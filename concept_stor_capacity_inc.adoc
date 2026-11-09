@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: concept_stor_capacity_inc.html 
+keywords: ontap select, deploy, increase storage 
+summary: ONTAP Deploy kann verwendet werden, um zusätzlichen Speicher für jeden Node in einem ONTAP Select Cluster hinzuzufügen und zu lizenzieren. 
+---
+= Überlegungen zur Erhöhung der Speicherkapazität von ONTAP Select
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Deploy kann verwendet werden, um zusätzlichen Speicher für jeden Node in einem ONTAP Select Cluster hinzuzufügen und zu lizenzieren.
+
+Die Speichererweiterungsfunktion in ONTAP Deploy ist die einzige Möglichkeit, den verwalteten Speicher zu vergrößern, und eine direkte Änderung der ONTAP Select VM wird nicht unterstützt. Die folgende Abbildung zeigt das „+“-Symbol, das den Speichererweiterungsassistenten startet.
+
+image:ST_05.jpg["Cluster- und Knotendetails"]
+
+Die folgenden Überlegungen sind für den Erfolg der Kapazitätserweiterungsoperation wichtig. Das Hinzufügen von Kapazität erfordert, dass die bestehende Lizenz den gesamten Speicherplatz (bestehend plus neu) abdeckt. Ein Speicher-Hinzufügen-Vorgang, der dazu führt, dass der Node seine lizenzierte Kapazität überschreitet, schlägt fehl. Zuerst sollte eine neue Lizenz mit ausreichender Kapazität installiert werden.
+
+Wird die zusätzliche Kapazität einem bestehenden ONTAP Select Aggregate hinzugefügt, sollte der neue Speicherpool (Datenspeicher) ein ähnliches Leistungsprofil wie der bestehende Speicherpool (Datenspeicher) aufweisen. Beachten Sie, dass es nicht möglich ist, einem ONTAP Select Node mit AFF-ähnlicher Personality (Flash-fähig) Nicht-SSD-Speicher hinzuzufügen. Das Mischen von DAS und externem Speicher wird ebenfalls nicht unterstützt.
+
+Wird einem System lokal angeschlossener Speicher hinzugefügt, um zusätzliche lokale (DAS) Speicherpools bereitzustellen, müssen Sie eine zusätzliche RAID-Gruppe und LUN (oder LUNs) erstellen. Wie bei FAS-Systemen ist darauf zu achten, dass die Leistung der neuen RAID-Gruppe der der ursprünglichen RAID-Gruppe entspricht, wenn Sie demselben Datenaggregat neuen Speicherplatz hinzufügen. Wenn Sie ein neues Datenaggregat erstellen, kann das Layout der neuen RAID-Gruppe abweichen, sofern die Auswirkungen auf die Leistung des neuen Datenaggregats genau bekannt sind.
+
+Der neue Speicherplatz kann als Erweiterung zu demselben Datenspeicher hinzugefügt werden, sofern die Gesamtgröße des Datenspeichers die maximal unterstützte Größe nicht überschreitet. Das Hinzufügen einer Datenspeichererweiterung zu dem Datenspeicher, in dem ONTAP Select bereits installiert ist, kann dynamisch erfolgen und hat keine Auswirkungen auf die Operationen des ONTAP Select Node.
+
+Wenn der ONTAP Select Node Teil eines HA-Paares ist, sollten einige zusätzliche Aspekte berücksichtigt werden.
+
+In einem HA-Paar enthält jeder Knoten eine Spiegelkopie der Daten seines Partners. Wird Knoten 1 zusätzlicher Speicherplatz hinzugefügt, muss auch seinem Partner, Knoten 2, die gleiche Menge Speicherplatz hinzugefügt werden, damit alle Daten von Knoten 1 auf Knoten 2 repliziert werden. Anders ausgedrückt: Der Speicherplatz, der Knoten 2 im Rahmen der Kapazitätserweiterung für Knoten 1 hinzugefügt wird, ist auf Knoten 2 weder sichtbar noch zugänglich. Der Speicherplatz wird Knoten 2 hinzugefügt, damit die Daten von Knoten 1 während eines HA-Ereignisses vollständig geschützt sind.
+
+Ein weiterer Aspekt ist hinsichtlich der Leistung zu berücksichtigen. Die Daten auf Knoten 1 werden synchron auf Knoten 2 repliziert. Daher muss die Leistung des neuen Speicherplatzes (Datenspeichers) auf Knoten 1 der Leistung des neuen Speicherplatzes (Datenspeichers) auf Knoten 2 entsprechen. Anders ausgedrückt: Das Hinzufügen von Speicherplatz auf beiden Knoten, jedoch mit unterschiedlichen Laufwerkstechnologien oder unterschiedlichen RAID-Gruppengrößen, kann zu Leistungsproblemen führen. Dies liegt an der RAID-SyncMirror-Operation, die zur Aufrechterhaltung einer Datenkopie auf dem Partnerknoten verwendet wird.
+
+Um die für Benutzer nutzbare Kapazität auf beiden Knoten eines HA-Paares zu erhöhen, müssen zwei Speichererweiterungsoperationen durchgeführt werden, eine für jeden Knoten. Jede Speichererweiterungsoperation erfordert zusätzlichen Speicherplatz auf beiden Knoten. Der insgesamt benötigte Speicherplatz auf jedem Knoten entspricht der Summe des auf Knoten 1 benötigten Speicherplatzes und des auf Knoten 2 benötigten Speicherplatzes.
+
+Die Standardkonfiguration besteht aus zwei Knoten, wobei jeder Knoten über zwei Datenspeicher mit jeweils 30TB Speicherplatz verfügt. ONTAP Deploy erstellt einen Zwei-Node-Cluster, wobei jeder Knoten 10TB Speicherplatz im ersten Datenspeicher belegt. ONTAP Deploy konfiguriert jeden Knoten mit 5TB aktivem Speicherplatz pro Knoten.
+
+Die folgende Abbildung zeigt die Ergebnisse einer einzelnen Speichererweiterung für Knoten 1. ONTAP Select nutzt weiterhin auf jedem Knoten die gleiche Speichermenge (15TB). Knoten 1 verfügt jedoch über mehr aktiven Speicher (10TB) als Knoten 2 (5TB). Beide Knoten sind vollständig geschützt, da jeder Knoten eine Kopie der Daten des jeweils anderen Knotens speichert. In Datenspeicher 1 ist noch zusätzlicher freier Speicherplatz vorhanden, und Datenspeicher 2 ist weiterhin vollständig frei.
+
+*Kapazitätsverteilung: Belegter und freier Speicherplatz nach einer einzelnen Speicher-add-Operation*
+
+image:ST_06.jpg["Kapazitätsverteilung: Zuweisung und freier Speicherplatz nach einer einzelnen Speicher-add-Operation"]
+
+Zwei zusätzliche Speichererweiterungsoperationen auf Knoten 1 belegen den restlichen Speicherplatz von Datenspeicher 1 und einen Teil von Datenspeicher 2 (unter Ausschöpfung der Kapazitätsgrenze). Die erste Speichererweiterungsoperation belegt die verbleibenden 15TB freien Speicherplatz in Datenspeicher 1. Die folgende Abbildung zeigt das Ergebnis der zweiten Speichererweiterungsoperation. Zu diesem Zeitpunkt verwaltet Knoten 1 50TB aktive Daten, während Knoten 2 die ursprünglichen 5TB beibehält.
+
+*Kapazitätsverteilung: Zuweisung und freier Speicherplatz nach zwei zusätzlichen Speicher-Add-Operationen für Node 1*
+
+image:ST_07.jpg["Kapazitätsverteilung: Zuweisung und freier Speicherplatz nach zwei zusätzlichen Speicher-Add-Operationen für Node 1"]
+
+Die maximale VMDK-Größe, die während Kapazitätserweiterungen verwendet wird, beträgt 16TB. Die maximale VMDK-Größe, die während Clustererstellungsvorgängen verwendet wird, beträgt weiterhin 8TB. ONTAP Deploy erstellt VMDKs in der richtigen Größe, abhängig von Ihrer Konfiguration (Einzel-Node- oder Multi-Node-Cluster) und der hinzuzufügenden Kapazität. Die maximale Größe jeder VMDK sollte jedoch während der Clustererstellungsvorgänge 8TB und während der Speichererweiterungsvorgänge 16TB nicht überschreiten.
+
+
+
+[[increase-capacity-for-ontap-select-with-software-raid]]
+== Erweitern Sie die Kapazität für ONTAP Select mit Software-RAID
+
+Der Speichererweiterungsassistent kann analog dazu verwendet werden, um die verwaltete Kapazität für ONTAP Select Nodes mithilfe von Software-RAID zu erhöhen. Der Assistent zeigt nur die verfügbaren DAS SSD-Laufwerke an, die als RDMs der ONTAP Select VM zugeordnet werden können.
+
+Obwohl die Kapazitätslizenz um ein Terabyte erweitert werden kann, ist es bei Software-RAID nicht möglich, die Kapazität physisch um ein einzelnes Terabyte zu erhöhen. Ähnlich wie beim Hinzufügen von Festplatten zu einem FAS oder AFF Array bestimmen bestimmte Faktoren die minimale Menge an Speicher, die in einem einzigen Vorgang hinzugefügt werden kann.
+
+
+NOTE: In einem HA-Paar erfordert das Hinzufügen von Speicher zu Knoten 1, dass auf dem HA-Paar des Knotens (Knoten 2) die gleiche Anzahl an Laufwerken verfügbar ist. Sowohl die lokalen Laufwerke als auch die Remote-Laufwerke werden durch einen Speichererweiterungsvorgang auf Knoten 1 verwendet. Das heißt, die Remote-Laufwerke werden verwendet, um sicherzustellen, dass der neue Speicher auf Knoten 1 auf Knoten 2 repliziert und geschützt wird. Um lokal nutzbaren Speicher auf Knoten 2 hinzuzufügen, ist ein separater Speichererweiterungsvorgang und eine separate, gleiche Anzahl an Laufwerken auf beiden Knoten erforderlich.
+
+ONTAP Select partitioniert neue Laufwerke in dieselben Root-, Daten- und Datenpartitionen wie die vorhandenen Laufwerke. Die Partitionierung erfolgt beim Erstellen eines neuen Aggregats oder beim Erweitern eines bestehenden Aggregats. Die Größe des Root-Partitionsstreifens auf jeder Festplatte entspricht der Größe der vorhandenen Root-Partition auf den vorhandenen Festplatten. Die Größe jeder der beiden gleich großen Datenpartitionen berechnet sich somit aus der Gesamtkapazität der Festplatte abzüglich der Root-Partitionsgröße, geteilt durch zwei. Die Größe des Root-Partitionsstreifens ist variabel und wird bei der initialen Cluster-Einrichtung wie folgt berechnet. Der benötigte Root-Speicherplatz (68GB für einen Einzelknoten-Cluster und 136GB für HA-Paare) wird auf die anfängliche Anzahl der Festplatten abzüglich etwaiger Ersatz- und Paritätslaufwerke verteilt. Die Größe des Root-Partitionsstreifens bleibt auf allen dem System hinzugefügten Laufwerken konstant.
+
+Wenn Sie ein neues Aggregat erstellen, variiert die Mindestanzahl der erforderlichen Laufwerke je nach RAID-Typ und davon, ob der ONTAP Select Node Teil eines HA-Paares ist.
+
+Wenn einem bestehenden Datenaggregat Speicher hinzugefügt wird, sind einige zusätzliche Überlegungen erforderlich. Es ist möglich, einem bestehenden RAID-Verbund Festplatten hinzuzufügen, vorausgesetzt, dass die RAID-Gruppe noch nicht das maximale Limit erreicht hat. Die bewährten Verfahren für das Hinzufügen von Spindeln zu bestehenden RAID-Gruppen bei traditionellen FAS und AFF gelten auch hier, und die Entstehung eines Hotspots auf der neuen Spindel ist ein potenzielles Problem. Außerdem können einem bestehenden RAID-Verbund nur Festplatten mit gleicher oder größerer Datenpartitionsgröße hinzugefügt werden. Wie oben erläutert, ist die Datenpartitionsgröße nicht identisch mit der Rohgröße der Festplatte. Wenn die hinzugefügten Datenpartitionen größer als die vorhandenen Partitionen sind, wird die neue Festplatte passend dimensioniert. Mit anderen Worten bleibt ein Teil der Kapazität jeder neuen Festplatte ungenutzt.
+
+Es ist auch möglich, die neuen Laufwerke zu verwenden, um eine neue RAID-Gruppe als Teil eines bestehenden Aggregats zu erstellen. In diesem Fall sollte die Größe der RAID-Gruppe der bestehenden RAID-Gruppengröße entsprechen.

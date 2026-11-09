@@ -1,0 +1,41 @@
+---
+sidebar: sidebar 
+permalink: concept_api_how_access.html 
+keywords: rest api, deploy rest api, rest, access, accessing, how to access 
+summary: Aufgrund der inhärenten Flexibilität von REST-Webdiensten kann auf die ONTAP Select Deploy API auf verschiedene Arten zugegriffen werden. 
+---
+= Informationen zum Zugriff auf die ONTAP Select Deploy API
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Aufgrund der inhärenten Flexibilität von REST-Webdiensten kann auf die ONTAP Select Deploy API auf verschiedene Arten zugegriffen werden.
+
+
+NOTE: Die in ONTAP Select Deploy enthaltene REST-API besitzt eine Versionsnummer. Diese Versionsnummer ist unabhängig von der Deploy-Versionsnummer. Das ONTAP Select 9.19.1 Deploy Verwaltungsprogramm beinhaltet Version 3 der REST-API.
+
+
+
+[[deploy-utility-native-user-interface]]
+== Nativen Benutzeroberfläche für das Dienstprogramm bereitstellen
+
+Der primäre Zugriff auf die API erfolgt über die ONTAP Select Deploy Web-Benutzeroberfläche. Der Browser ruft die API auf und formatiert die Daten entsprechend dem Design der Benutzeroberfläche. Sie können auch über die Befehlszeilenschnittstelle des Deploy-Dienstprogramms auf die API zugreifen.
+
+
+
+[[ontap-select-deploy-online-documentation-page]]
+== ONTAP Select Deploy Online-Dokumentationsseite
+
+Die ONTAP Select Deploy Online-Dokumentationsseite bietet einen alternativen Zugriffspunkt bei der Verwendung eines Browsers. Neben der Möglichkeit, einzelne API-Aufrufe direkt auszuführen, enthält die Seite auch eine detaillierte Beschreibung der API, einschließlich Eingabeparametern und weiterer Optionen für jeden Aufruf. Die API-Aufrufe sind in mehrere verschiedene Funktionsbereiche oder Kategorien unterteilt.
+
+
+
+[[custom-program]]
+== Benutzerdefiniertes Programm
+
+Sie können die Deploy API mit verschiedenen Programmiersprachen und Tools nutzen. Beliebte Optionen sind Python, Java und cURL. Ein Programm, Skript oder Tool, das die API verwendet, fungiert als REST-Webservices-Client. Die Verwendung einer Programmiersprache ermöglicht ein besseres Verständnis der API und bietet die Möglichkeit, die ONTAP Select Deployments zu automatisieren.

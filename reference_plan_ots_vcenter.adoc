@@ -1,0 +1,92 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_vcenter.html 
+keywords: plan, planning, vmware vcenter, vcenter server, vcenter 
+summary: Es gibt mehrere Planungsanforderungen im Zusammenhang mit VMware vCenter, die Sie berücksichtigen sollten. 
+---
+= ONTAP Select VMware vCenter Server auf ESXi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sie müssen ein vCenter-Serverkonto definieren und es einer Rolle zuordnen, die die erforderlichen administrativen Berechtigungen enthält.
+
+
+NOTE: Sie benötigen außerdem den vollqualifizierten Domainnamen oder die IP-Adresse des vCenter Servers, der die ESXi-Hypervisor-Hosts verwaltet, auf denen ONTAP Select bereitgestellt ist.
+
+
+
+[[administrative-privileges]]
+== Administratorrechte
+
+Die minimalen administrativen Berechtigungen, die zum Erstellen und Verwalten eines ONTAP Select Clusters erforderlich sind, werden im Folgenden aufgeführt.
+
+
+
+[[datastore]]
+=== Datenspeicher
+
+* Speicherplatz zuweisen
+* Datenspeicher durchsuchen
+* Dateioperationen auf niedriger Ebene
+* Aktualisieren Sie die Dateien der virtuellen Maschine
+* Metadaten der virtuellen Maschine aktualisieren
+
+
+
+
+[[host]]
+=== Host
+
+Konfiguration::
++
+--
+* Netzwerkkonfiguration
+* Systemverwaltung
+
+
+--
+Lokale Operationen::
++
+--
+* Virtuelle Maschine erstellen
+* Virtuelle Maschine löschen
+* Virtuelle Maschine neu konfigurieren
+
+
+--
+
+
+
+
+[[network]]
+=== Netzwerk
+
+* Netzwerk zuweisen
+
+
+
+
+[[virtual-machine]]
+=== Virtuelle Maschine
+
+Konfiguration:: Alle Privilegien in dieser Kategorie.
+Interaktion:: Alle Privilegien in dieser Kategorie.
+Inventar:: Alle Privilegien in dieser Kategorie.
+Bereitstellung:: Alle Privilegien in dieser Kategorie.
+
+
+
+
+[[vapp]]
+=== vApp
+
+Alle Privilegien in dieser Kategorie.
+
+.Verwandte Informationen
+link:reference_plan_dep_vmware.html#vmware-vcenter-server-considerations["Erfahren Sie mehr über VMware vSphere-Berechtigungen für vSAN ESA in vCenter"]

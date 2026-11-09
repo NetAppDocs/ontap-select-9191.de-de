@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: reference_chk_deploy_req_info.html 
+keywords: ontap select, deploy, pre-installation, vmware 
+summary: Bevor Sie das Deploy-Verwaltungsprogramm in einer VMware-Umgebung installieren, überprüfen Sie die grundlegenden Anforderungen und bereiten Sie sich auf eine erfolgreiche Bereitstellung vor. 
+---
+= Erforderliche Informationen für die Installation des ONTAP Select Deploy-Dienstprogramms
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Bevor Sie das Deploy-Verwaltungsprogramm in einer Hypervisor-Umgebung installieren, überprüfen Sie die erforderlichen Konfigurationsinformationen und optionalen Netzwerkkonfigurationsinformationen, um eine erfolgreiche Bereitstellung vorzubereiten.
+
+
+
+[[required-configuration-information]]
+== Erforderliche Konfigurationsinformationen
+
+Im Rahmen Ihrer Bereitstellungsplanung sollten Sie die erforderlichen Konfigurationsinformationen ermitteln, bevor Sie das ONTAP Select Deploy Verwaltungsprogramm installieren.
+
+[cols="40,60"]
+|===
+| Erforderliche Informationen | Beschreibung 
+
+
+| Name der Deploy-virtuellen Maschine | Kennung für die virtuelle Maschine. 
+
+
+| Name des Hypervisor-Hosts | Kennung für den VMware ESXi- oder KVM-Hypervisor-Host, auf dem das Deploy-Dienstprogramm installiert ist. 
+
+
+| Name des Datenspeichers | Kennung für den Hypervisor-Datenspeicher, der die Dateien der virtuellen Maschine enthält (ca. 40GB werden benötigt). 
+
+
+| Netzwerk für die virtuelle Maschine | Kennung für das Netzwerk, mit dem die virtuelle Maschine Deploy verbunden ist. 
+|===
+
+
+[[optional-network-configuration-information]]
+== Optionale Netzwerkkonfigurationsinformationen
+
+Die virtuelle Maschine „Deploy“ ist standardmäßig per DHCP konfiguriert. Bei Bedarf können Sie die Netzwerkschnittstelle der virtuellen Maschine jedoch manuell konfigurieren.
+
+[cols="35,65"]
+|===
+| Netzwerkinformationen | Beschreibung 
+
+
+| Hostname | Kennung des Host-Rechners. 
+
+
+| Host-IP-Adresse | Statische IPv4-Adresse des Host-Rechners. 
+
+
+| Subnetzmaske | Subnetzmaske, basierend auf dem Netzwerk, zu dem die virtuelle Maschine gehört. 
+
+
+| Gateway | Standardgateway oder Router. 
+
+
+| Primärer DNS-Server | Primärer Domain Name Server. 
+
+
+| Sekundärer DNS-Server | Sekundärer Domain Name Server. 
+
+
+| Suchdomänen | Liste der zu verwendenden Suchdomänen. 
+|===

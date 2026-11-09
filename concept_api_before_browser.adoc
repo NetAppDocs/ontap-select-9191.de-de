@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: concept_api_before_browser.html 
+keywords: rest api, deploy rest api, rest, access browser, before you begin 
+summary: Bevor Sie die Online-Dokumentationsseite von Deploy verwenden, sollten Sie einige Dinge beachten. 
+---
+= Informationen zum Zugriff auf die ONTAP Select Deploy API mit einem Browser
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Bevor Sie die Online-Dokumentationsseite von Deploy verwenden, sollten Sie einige Dinge beachten.
+
+
+
+[[deployment-plan]]
+== Einsatzplan
+
+Wenn Sie im Rahmen bestimmter Bereitstellungs- oder Verwaltungsaufgaben API-Aufrufe durchführen möchten, sollten Sie einen Bereitstellungsplan erstellen. Diese Pläne können formell oder informell sein und enthalten in der Regel Ihre Ziele sowie die zu verwendenden API-Aufrufe. Weitere Informationen finden Sie unter Workflow-Prozesse mit der Deploy REST API.
+
+
+
+[[json-examples-and-parameter-definitions]]
+== JSON-Beispiele und Parameterdefinitionen
+
+Jeder API-Aufruf wird auf der Dokumentationsseite in einem einheitlichen Format beschrieben. Der Inhalt umfasst Implementierungshinweise, Abfrageparameter und HTTP-Statuscodes. Zusätzlich können Sie Details zum verwendeten JSON für API-Anfragen und -Antworten wie folgt anzeigen lassen:
+
+* Beispielwert: Wenn Sie bei einem API-Aufruf _Beispielwert_ auswählen, wird eine typische JSON-Struktur für den Aufruf angezeigt. Sie können das Beispiel nach Bedarf anpassen und als Eingabe für Ihre Anfrage verwenden.
+* Modell Wenn Sie _Modell_ auswählen, wird eine vollständige Liste der JSON-Parameter mit einer Beschreibung für jeden Parameter angezeigt.
+
+
+
+
+[[caution-when-issuing-api-calls]]
+== Vorsicht beim Ausführen von API-Aufrufen
+
+Alle API-Operationen, die Sie über die Deploy-Dokumentationsseite durchführen, sind Live-Operationen. Sie sollten darauf achten, Konfigurationen oder andere Daten nicht versehentlich zu erstellen, zu aktualisieren oder zu löschen.

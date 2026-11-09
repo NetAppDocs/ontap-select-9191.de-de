@@ -1,0 +1,72 @@
+---
+sidebar: sidebar 
+permalink: reference_chk_select_req_info.html 
+keywords: ontap select, pre-installation, vmware 
+summary: Sammeln Sie im Rahmen der Vorbereitungen für die Bereitstellung eines ONTAP Select-Clusters in einer VMware-Umgebung die Informationen, die für die Verwendung des ONTAP Select Deploy-Verwaltungsprogramms zur Bereitstellung und Konfiguration des Clusters erforderlich sind. 
+---
+= Erforderliche Informationen für ONTAP Select Installation
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sammeln Sie im Rahmen der Vorbereitungen für die Bereitstellung eines ONTAP Select-Clusters in einer VMware-Umgebung die Informationen, die für die Verwendung des ONTAP Select Deploy-Verwaltungsprogramms zur Bereitstellung und Konfiguration des Clusters erforderlich sind.
+
+Einige der gesammelten Informationen beziehen sich auf den Cluster selbst, während sich andere Informationen auf die einzelnen Nodes im Cluster beziehen.
+
+
+
+[[cluster-level-information]]
+== Informationen auf Clusterebene
+
+Sie müssen Informationen zum ONTAP Select Cluster sammeln.
+
+[cols="35,65"]
+|===
+| Clusterinformationen | Beschreibung 
+
+
+| Name des Clusters | Eindeutiger Bezeichner des Clusters. 
+
+
+| Lizenzierungsmodus | Evaluierung oder erworbene Lizenz. 
+
+
+| IP-Konfiguration für den Cluster | IP-Konfiguration für die Cluster und Knoten, einschließlich: * Management-IP-Adresse des Clusters * Subnetzmaske * Standardgateway 
+|===
+
+
+[[host-level-information]]
+== Informationen auf Hostebene
+
+Sie müssen Informationen zu jedem einzelnen Node im ONTAP Select Cluster sammeln.
+
+[cols="35,65"]
+|===
+| Clusterinformationen | Beschreibung 
+
+
+| Name des Hosts | Eindeutige Kennung des Hosts. 
+
+
+| Domänenname des Hosts | Vollständiger Domainname des Hosts. 
+
+
+| IP-Konfiguration für die Knoten | Management-IP-Adresse für jeden Knoten im Cluster. 
+
+
+| Spiegelknoten | Name des zugehörigen Knotens im HA-Paar (nur bei Clustern mit mehreren Knoten). 
+
+
+| Storage-Pool | Name des verwendeten Speicherpools. 
+
+
+| Speicherfestplatten | Liste der Festplatten bei Verwendung von Software-RAID. 
+
+
+| Seriennummer | Wenn Sie mit einer erworbenen Lizenz bereitstellen, die eindeutige neunstellige Seriennummer, die von NetApp bereitgestellt wird. 
+|===

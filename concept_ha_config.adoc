@@ -1,0 +1,73 @@
+---
+sidebar: sidebar 
+permalink: concept_ha_config.html 
+keywords: ontap select, high availability configurations, two-node ha, multi-node ha, mc sds 
+summary: Entdecken Sie Hochverfügbarkeitsoptionen, um die beste HA-Konfiguration für Ihre Umgebung auszuwählen. 
+---
+= ONTAP Select Hochverfügbarkeitskonfigurationen
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Entdecken Sie Hochverfügbarkeitsoptionen, um die beste HA-Konfiguration für Ihre Umgebung auszuwählen.
+
+Obwohl Kunden zunehmend Anwendungsworkloads von Enterprise-Speichersystemen auf softwarebasierte Lösungen auf Standardhardware verlagern, bleiben die Erwartungen und Anforderungen an Ausfallsicherheit und Fehlertoleranz unverändert. Eine HA-Lösung mit einem Recovery Point Objective (RPO) von null schützt den Kunden vor Datenverlust durch den Ausfall einer beliebigen Komponente im Infrastruktur-Stack.
+
+Ein Großteil des SDS-Marktes basiert auf dem Konzept des Shared-Nothing-Speichers, wobei die Softwarereplikation Datensicherheit gewährleistet, indem sie mehrere Kopien von Benutzerdaten auf verschiedenen Speichersilos speichert. ONTAP Select baut auf diesem Prinzip auf, indem es die Funktionen der synchronen Replizierung (RAID SyncMirror), die von ONTAP bereitgestellt werden, nutzt, um eine zusätzliche Kopie der Benutzerdaten innerhalb des Clusters zu speichern. Dies geschieht im Kontext eines HA-Paares. Jedes HA-Paar speichert zwei Kopien der Benutzerdaten: eine auf dem Speicher des lokalen Knotens und eine auf dem Speicher des HA-Partners. Innerhalb eines ONTAP Select Clusters sind HA und synchrone Replizierung miteinander verknüpft, und die Funktionalität der beiden kann nicht entkoppelt oder unabhängig voneinander verwendet werden. Daher ist die Funktion der synchronen Replizierung nur in der Multi-Node-Variante verfügbar.
+
+
+NOTE: In einem ONTAP Select Cluster ist die Funktionalität der synchronen Replizierung eine Funktion der HA-Implementierung und kein Ersatz für die asynchronen SnapMirror- oder SnapVault-Replikations-Engines. Synchrone Replizierung kann nicht unabhängig von HA verwendet werden.
+
+Es gibt zwei ONTAP Select HA-Bereitstellungsmodelle: die Multi-Node-Cluster (vier, sechs, acht, zehn oder zwölf Knoten) und die Zwei-Node-Cluster. Das Hauptmerkmal eines Zwei-Node ONTAP Select Clusters ist die Verwendung eines externen Mediator-Dienstes zur Auflösung von Split-Brain-Szenarien. Die ONTAP Deploy VM dient als Standard-Mediator für alle Zwei-Node HA-Paare, die sie konfiguriert.
+
+Die beiden Architekturen sind in den folgenden Abbildungen dargestellt.
+
+*Zwei-Node-ONTAP Select Cluster mit Remote-Mediator und lokal angeschlossenem Speicher*
+
+image:DDHA_01.jpg["Zwei-Node-ONTAP Select Cluster mit Remote-Mediator und lokal angeschlossenem Speicher"]
+
+
+NOTE: Der Zwei-Node-ONTAP Select Cluster besteht aus einem HA-Paar und einem Mediator. Innerhalb des HA-Paares werden Datenaggregate auf jedem Cluster-Node synchron gespiegelt, und im Falle eines Failovers geht kein Datenverlust auf.
+
+*Vier-Node ONTAP Select Cluster mit lokal angeschlossenem Speicher*image:DDHA_02.jpg["Vier-Node ONTAP Select Cluster mit lokal angeschlossenem Speicher"]
+
+* Der ONTAP Select Cluster mit vier Knoten besteht aus zwei HA-Paaren. Cluster mit sechs, acht, zehn und zwölf Knoten bestehen aus jeweils drei, vier, fünf und sechs HA-Paaren. Innerhalb jedes HA-Paares werden Datenaggregate auf jedem Clusterknoten synchron gespiegelt, und im Falle eines Failovers geht kein Datenverlust auf.
+* Nur eine ONTAP Select-Instanz kann auf einem physischen Server vorhanden sein, wenn DAS-Speicher verwendet wird. ONTAP Select benötigt ungeteilten Zugriff auf den lokalen RAID-Controller des Systems und ist dafür ausgelegt, die lokal angeschlossenen Festplatten zu verwalten, was ohne physische Verbindung zum Speicher nicht möglich wäre.
+
+
+
+
+[[two-node-ha-versus-multi-node-ha]]
+== Zwei-Node-HA versus Multi-Node-HA
+
+Im Gegensatz zu FAS-Arrays kommunizieren ONTAP Select-Knoten in einem HA-Paar ausschließlich über das IP-Netzwerk. Das bedeutet, dass das IP-Netzwerk ein Single Point of Failure (SPOF) ist und der Schutz vor Netzwerkpartitionen und Split-Brain-Szenarien ein wichtiger Aspekt des Designs wird. Der Multi-Node-Cluster kann den Ausfall einzelner Knoten verkraften, da das Cluster-Quorum von den drei oder mehr verbleibenden Knoten gebildet werden kann. Der Zwei-Node-Cluster ist auf den Mediator-Dienst angewiesen, der von der ONTAP Deploy VM gehostet wird, um das gleiche Ergebnis zu erzielen.
+
+Der Heartbeat-Netzwerkverkehr zwischen den ONTAP Select-Knoten und dem ONTAP Deploy-Mediatordienst ist minimal und ausfallsicher, sodass die ONTAP Deploy-VM in einem anderen Rechenzentrum als dem ONTAP Select Zwei-Node-Cluster gehostet werden kann.
+
+
+NOTE: Die ONTAP Deploy VM wird integraler Bestandteil eines Zwei-Node-Cluster, wenn sie als Mediator für diesen Cluster fungiert. Wenn der Mediatordienst nicht verfügbar ist, stellt der Zwei-Node-Cluster weiterhin Daten bereit, aber die Speicherausfallsicherungsfunktionen des ONTAP Select Clusters sind deaktiviert. Daher muss der ONTAP Deploy Mediatordienst eine ständige Kommunikation mit jedem ONTAP Select Node im HA-Paar aufrechterhalten. Eine minimale Bandbreite von 5 Mbps und eine maximale Round-Trip-Time (RTT) Latenz von 125 ms sind erforderlich, um die ordnungsgemäße Funktion des Cluster-Quorums zu ermöglichen.
+
+Wenn die als Mediator fungierende ONTAP Deploy VM vorübergehend oder möglicherweise dauerhaft nicht verfügbar ist, kann eine sekundäre ONTAP Deploy VM verwendet werden, um das Zwei-Node-Cluster-Quorum wiederherzustellen. Dies führt zu einer Konfiguration, in der die neue ONTAP Deploy VM die ONTAP Select Nodes zwar nicht verwalten kann, aber erfolgreich am Cluster-Quorum-Algorithmus teilnimmt. Die Kommunikation zwischen den ONTAP Select Nodes und der ONTAP Deploy VM erfolgt über das iSCSI-Protokoll via IPv4. Die Management-IP-Adresse des ONTAP Select Node ist der Initiator, und die IP-Adresse der ONTAP Deploy VM ist das Ziel. Daher ist es nicht möglich, IPv6-Adressen für die Management-IP-Adressen der Nodes beim Erstellen eines Zwei-Node-Clusters zu unterstützen. Die von ONTAP Deploy gehosteten Mailbox-Disks werden bei der Erstellung des Zwei-Node-Clusters automatisch erstellt und den entsprechenden Management-IP-Adressen der ONTAP Select Nodes zugeordnet. Die gesamte Konfiguration wird während der Einrichtung automatisch durchgeführt, und es sind keine weiteren administrativen Maßnahmen erforderlich. Die ONTAP Deploy Instanz, die den Cluster erstellt, ist der Standard-Mediator für diesen Cluster.
+
+Eine administrative Maßnahme ist erforderlich, wenn der ursprüngliche Mediatorstandort geändert werden muss. Es ist möglich, ein Clusterquorum wiederherzustellen, selbst wenn die ursprüngliche ONTAP Deploy VM verloren geht. Allerdings empfiehlt NetApp, die ONTAP Deploy Datenbank nach der Instanziierung jedes Zwei-Node-Clusters zu sichern.
+
+
+
+[[two-node-ha-versus-two-node-stretched-ha-metrocluster-sds]]
+== Zwei-Node-HA versus Zwei-Node-gestrecktes HA (MetroCluster SDS)
+
+Ein Aktiv/Aktiv HA-Cluster mit zwei Knoten lässt sich über größere Entfernungen ausdehnen, wobei jeder Knoten potenziell in einem anderen Rechenzentrum platziert werden kann. Der einzige Unterschied zwischen einem Zwei-Node-Cluster und einem gestreckten Zwei-Node-Cluster (auch als MetroCluster SDS bezeichnet) ist die Entfernung der Netzwerkverbindung zwischen den Knoten.
+
+Ein Zwei-Node-Cluster ist definiert als ein Cluster, bei dem sich beide Knoten im selben Rechenzentrum innerhalb einer Entfernung von 300m befinden. Im Allgemeinen verfügen beide Knoten über Uplinks zu demselben Netzwerk-Switch oder derselben Gruppe von Interswitch-Link (ISL) Netzwerk-Switches.
+
+Ein Zwei-Node-MetroCluster SDS ist als ein Cluster definiert, dessen Knoten physisch durch mehr als 300 m voneinander getrennt sind (unterschiedliche Räume, unterschiedliche Gebäude und unterschiedliche Rechenzentren). Zusätzlich sind die Uplink-Verbindungen jedes Knotens an separate Netzwerkswitches angeschlossen. Das MetroCluster SDS erfordert keine dedizierte Hardware. Die Umgebung sollte jedoch die Anforderungen an die Latenz erfüllen (maximal 5 ms für RTT und 5 ms für Jitter, insgesamt also 10 ms).
+
+MetroCluster SDS ist eine Premium-Funktion und erfordert eine Premium-Lizenz oder eine Premium-XL-Lizenz. Die Premium-Lizenz unterstützt die Erstellung von kleinen und mittelgroßen VMs sowie von HDD- und SSD-Medien. Die Premium-XL-Lizenz unterstützt außerdem die Erstellung von NVMe-Laufwerken.
+
+
+NOTE: MetroCluster SDS wird sowohl mit lokal angeschlossenem Speicher (DAS) als auch mit gemeinsam genutztem Speicher (vNAS) unterstützt. Beachten Sie, dass vNAS-Konfigurationen aufgrund der Netzwerkverbindung zwischen der ONTAP Select VM und dem gemeinsam genutzten Speicher in der Regel eine höhere systembedingte Latenz aufweisen. MetroCluster SDS-Konfigurationen müssen eine maximale Latenz von 10 ms zwischen den Knoten gewährleisten, einschließlich der Latenz des gemeinsam genutzten Speichers. Anders ausgedrückt: Die alleinige Messung der Latenz zwischen den Select VMs ist nicht ausreichend, da die Latenz des gemeinsam genutzten Speichers bei diesen Konfigurationen nicht vernachlässigbar ist.

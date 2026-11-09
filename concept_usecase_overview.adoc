@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: concept_usecase_overview.html 
+keywords: ontap select, business use case overview, deployment, storage, development and testing 
+summary: ONTAP Select eignet sich für verschiedene Arten von Anwendungen, basierend auf der inhärenten Flexibilität, die durch die Hypervisor-Virtualisierung bereitgestellt wird. 
+---
+= ONTAP Select Geschäftsanforderungen und Nutzungsszenarien
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select eignet sich für verschiedene Arten von Anwendungen, basierend auf der inhärenten Flexibilität, die durch die Hypervisor-Virtualisierung bereitgestellt wird.
+
+
+
+[[deployment]]
+== Bereitstellung
+
+Auf einer übergeordneten Ebene kann ONTAP Select hinsichtlich der Arbeitslast auf den Hypervisor-Hostservern auf zwei verschiedene Arten bereitgestellt werden.
+
+
+
+[[dedicated-deployment]]
+=== Dedizierter Einsatz
+
+Beim dedizierten Bereitstellungsmodell läuft eine einzelne Instanz von ONTAP Select auf dem Hostserver. Es werden keine weiteren relevanten Prozesse auf demselben Hypervisor-Host ausgeführt.
+
+
+
+[[collocated-deployment]]
+=== Zusammengelegte Bereitstellung
+
+Beim Colocation-Bereitstellungsmodell teilt sich ONTAP Select den Host mit anderen Workloads. Konkret gibt es zusätzliche virtuelle Maschinen, auf denen typischerweise Rechenanwendungen ausgeführt werden. Diese Compute-Workloads befinden sich lokal im ONTAP Select Cluster. Dieses Modell unterstützt spezielle Anwendungs- und Bereitstellungsanforderungen. Wie beim dedizierten Bereitstellungsmodell muss jede ONTAP Select-VM auf einem separaten und dedizierten Hypervisor-Host ausgeführt werden.
+
+
+
+[[storage]]
+== Storage
+
+ONTAP Select kann je nach Ihren Geschäftsanforderungen als primärer oder sekundärer Speicher verwendet werden.
+
+
+
+[[primary-storage]]
+=== Primärspeicher
+
+In bestimmten Fällen können Sie sich dafür entscheiden, ONTAP Select als primäre Speicherplattform bereitzustellen. Diese Arten von Implementierungen variieren und hängen von den Workload-Charakteristika der Anwendungen sowie Ihren Geschäftszielen ab.
+
+
+
+[[disaster-recovery-and-secondary-storage]]
+=== Notfallwiederherstellung und Sekundärspeicherung
+
+Sie können ONTAP Select verwenden, um zusätzlichen Speicher zu implementieren, der Ihre primären Speicherkapazitäten erweitert. Dieser zusätzliche Speicher kann zur Unterstützung der Notfallwiederherstellungsmaßnahmen und Datensicherungspläne Ihres Unternehmens verwendet werden.
+
+
+
+[[development-and-testing]]
+== Entwicklung und Test
+
+Bei der Bereitstellung verschiedener Anwendungen in Ihrem Unternehmen können Sie ONTAP Select als integralen Bestandteil des gesamten Anwendungsentwicklungs- und Testprozesses nutzen. Beispielsweise benötigen Sie möglicherweise temporären Speicher für Test-Eingabe- oder Ausgabedaten. Die Dauer solcher Bereitstellungen kann je nach Anwendungseigenschaften und -anforderungen variieren.

@@ -1,0 +1,24 @@
+---
+sidebar: sidebar 
+permalink: task_cli_security.html 
+keywords: administer, administering, cli, security 
+summary: Es gibt mehrere damit zusammenhängende Aufgaben, die Sie im Rahmen der Absicherung einer ONTAP Select Bereitstellung durchführen können. 
+---
+= Sichern Sie eine ONTAP Select Bereitstellung
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Eine ONTAP Select Implementierung kann abgesichert werden, indem bei Bedarf das Kennwort für das Administrator-Konto der Deploy-virtuellen Maschine über die Befehlszeile geändert wird.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Deploy-Utility-CLI an.
+. Ändern Sie das Passwort:
+`password modify`
+. Reagieren Sie auf alle Aufforderungen entsprechend Ihrer Umgebung.
+

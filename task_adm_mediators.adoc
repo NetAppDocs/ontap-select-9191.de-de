@@ -1,0 +1,33 @@
+---
+sidebar: sidebar 
+permalink: task_adm_mediators.html 
+keywords: administer, administering, web, mediators 
+summary: Jeder ONTAP Select Zwei-Node-Cluster wird vom Mediator-Dienst überwacht, der bei der Verwaltung der von den Knoten gemeinsam genutzten HA-Fähigkeit hilft. 
+---
+= Verwalten der ONTAP Select Deploy-Mediatordienste
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Jeder ONTAP Select Zwei-Node-Cluster wird vom Mediator-Dienst überwacht, der bei der Verwaltung der von den Knoten gemeinsam genutzten HA-Fähigkeit hilft.
+
+
+
+[[view-the-status-of-the-mediator-service]]
+== Den Status des Mediator-Dienstes anzeigen
+
+Sie können den Status des Mediatordienstes in Bezug auf jeden der Zwei-Node-Cluster anzeigen, die im ONTAP Select Deploy-Dienstprogramm definiert sind.
+
+.Über diese Aufgabe
+Sie können die Konfiguration jedes Mediators einsehen, einschließlich des aktuellen Status, der beiden ONTAP Select Nodes und des iSCSI-Ziels, auf dem die HA-Steuerungsinformationen gespeichert sind. Bewegen Sie den Mauszeiger über die Objekte auf der Seite, um detaillierte Informationen anzuzeigen.
+
+.Schritte
+. Melden Sie sich mit dem Administratorkonto bei der Webbenutzeroberfläche des Deploy-Dienstprogramms an.
+. Wählen Sie oben auf der Seite die Registerkarte *Administration* und anschließend *Mediators*.
+. Optional können Sie *Filter* auswählen, um Ihre Ansicht der von der Mediator-Service überwachten Zwei-Knoten-Cluster anzupassen.
+
